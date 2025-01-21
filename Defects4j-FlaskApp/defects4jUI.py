@@ -92,10 +92,10 @@ def store_csv():
 
     path = "/root/results.csv"
 
-    df = pd.read_csv(path)
-
-    if not os.path.exists("/root/" + session["project"] + "-" + session["tool"] + ".csv"):
-        df.to_csv("/root/" + session["project"] + "-" + session["tool"] + ".csv", index=False)
+    if os.path.exists("/root/results.csv"):
+        df = pd.read_csv(path)
+        if not os.path.exists("/root/" + session["project"] + "-" + session["tool"] + ".csv"):
+            df.to_csv("/root/" + session["project"] + "-" + session["tool"] + ".csv", index=False)
 
 def load_csv(project):
     
@@ -225,6 +225,13 @@ def save_testsuite(data):
     file.write(data)
     file.close()
 
+def backup_generate():
+    clear_files()
+
+    path = os.path.split(os.getcwd())[0] + 'defects4j/analyzer/analyzer.py'
+    cmd = ("python3 " + path + " run $HOME/" + session["project"] + "f --all-dev --tools " + session["tool"])
+    os.system(cmd)
+
 def comment_java_file(file_path, line_number_to_comment):
     try:
         # Read the content of the file
@@ -259,6 +266,7 @@ def index():
     #session["ids"] = pm.get_projects_id()
     session["ids"] = ['Cli', 'Gson', 'Lang']
     session["projects"] = pm.get_projects_fromjson()
+    session["options"] = False
     session.modified = True
 
     return render_template('index.html', all_data = [session["ids"], session["projects"]])
@@ -367,7 +375,9 @@ def load_project():
             case _:
                 print("No tool selection was found.")
 
-    df = load_csv("results")
+    if os.path.exists("/root/results.csv"):
+        df = load_csv("results")
+        
     session["totalmutants"] = len(df)-1
 
     session.modified = True
@@ -377,6 +387,15 @@ def load_project():
     return render_template('project.html', all_data = [session["project"], session["tool"]],
                             table_header = table_header, sheet_data = sheet_data,
                             metric_data = session["metric_data"], summary_data = session["summary_data"])
+
+@app.route('/check_options', methods=['POST'])
+def check_options():
+    # Ensure 'options' exists in the session
+    options = session["options"]
+    if options is None:
+        return jsonify({'error': 'Options not set'}), 404  # Return error if options are not set
+
+    return jsonify({'options': options}), 200  # Return the boolean value as JSON
 
 @app.route('/generate', methods=['post'])
 def generate():
@@ -460,7 +479,51 @@ def analyze():
     if os.path.exists("/root/results.csv"):
         os.remove("/root/results.csv")
 
+    if not session["options"]:
+        session["options"] = True
+
     match session["tool"]:
+        case "pit":
+            dir_path = "/root/" + session["project"] + "f/tools_output/pit/"
+            filetype = "*.xml"
+            filename = ""
+            for file_path in os.listdir(dir_path):
+                if file_path.endswith(filetype[1:]):
+                    filename = file_path
+            cmd = ("python3 " + path + " table -p " + session["project_name"] + " -b "
+                        + session["project_version"] + " -t " + session["tool"]
+                        + " $HOME/" + session["project"] + "f/tools_output/pit/" + filename
+                        + " -o " + "$HOME/results.csv")
+            os.system(cmd)
+        case "major":
+            cmd = ("python3 " + path + " table -p " + session["project_name"] + " -b "
+                        + session["project_version"] + " -t " + session["tool"]
+                        + " $HOME/" + session["project"] + "f/tools_output/major/ -o "
+                        + "$HOME/results.csv")
+            os.system(cmd)
+        case _:
+            print("No tool selection was found.")
+
+    store_csv()
+    df1 = load_csv(session["project"] + "-" + session["tool"])
+    table_header = list()
+
+    match session["tool"]:
+        case "pit":
+            sheet_data = pit_parse(df1)
+            table_header = ["Mutant", "Line", "Operator", "Method"]
+        case "major":
+            sheet_data = major_parse(df1)
+            table_header = ["Mutant", "Line", "Operator", "Original", "Mutated"]
+        case _:
+            print("No tool selection was found.")
+
+    if os.path.exists("/root/results.csv"):
+        df2 = load_csv("results")
+        killed_list = csv_compare(df1, df2)
+    else:
+        backup_generate()
+        match session["tool"]:
             case "pit":
                 dir_path = "/root/" + session["project"] + "f/tools_output/pit/"
                 filetype = "*.xml"
@@ -469,35 +532,20 @@ def analyze():
                     if file_path.endswith(filetype[1:]):
                         filename = file_path
                 cmd = ("python3 " + path + " table -p " + session["project_name"] + " -b "
-                           + session["project_version"] + " -t " + session["tool"]
-                           + " $HOME/" + session["project"] + "f/tools_output/pit/" + filename
-                           + " -o " + "$HOME/results.csv")
+                            + session["project_version"] + " -t " + session["tool"]
+                            + " $HOME/" + session["project"] + "f/tools_output/pit/" + filename
+                            + " -o " + "$HOME/results.csv")
                 os.system(cmd)
             case "major":
                 cmd = ("python3 " + path + " table -p " + session["project_name"] + " -b "
-                           + session["project_version"] + " -t " + session["tool"]
-                           + " $HOME/" + session["project"] + "f/tools_output/major/ -o "
-                           + "$HOME/results.csv")
+                            + session["project_version"] + " -t " + session["tool"]
+                            + " $HOME/" + session["project"] + "f/tools_output/major/ -o "
+                            + "$HOME/results.csv")
                 os.system(cmd)
             case _:
                 print("No tool selection was found.")
-
-    store_csv()
-    df1 = load_csv(session["project"] + "-" + session["tool"])
-    table_header = list()
-
-    match session["tool"]:
-            case "pit":
-                sheet_data = pit_parse(df1)
-                table_header = ["Mutant", "Line", "Operator", "Method"]
-            case "major":
-                sheet_data = major_parse(df1)
-                table_header = ["Mutant", "Line", "Operator", "Original", "Mutated"]
-            case _:
-                print("No tool selection was found.")
-
-    df2 = load_csv("results")
-    killed_list = csv_compare(df1, df2)
+        df2 = load_csv("results")
+        killed_list = csv_compare(df1, df2)
         
     session["summary_data"] = summary()
     session.modified = True

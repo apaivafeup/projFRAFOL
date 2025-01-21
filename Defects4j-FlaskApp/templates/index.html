@@ -77,39 +77,74 @@
         }
 
         function get_versions() {
-        var project = document.getElementById('select_menu_one').value;
+            var project = document.getElementById('select_menu_one').value;
 
-        console.log("project: " + project);
+            console.log("project: " + project);
 
-        fetch('/project_versions', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ project: project })
-        })
-        .then(response => response.json())
-        .then(data => {
-            // Get a reference to the select element
-            var selectElement = document.getElementById("version");
+            fetch('/project_versions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ project: project })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Get a reference to the select element
+                var selectElement = document.getElementById("version");
 
-            // Clear existing options
-            selectElement.innerHTML = '';
+                // Clear existing options
+                selectElement.innerHTML = '';
 
-            console.log(data.versions);
+                console.log(data.versions);
 
-            // Update existing options
-            for (let i = 0;  i < data.versions.length; i++) {
-              var option = document.createElement("option");
-              option.text = data.versions[i];
-              option.value = data.versions[i];
-              selectElement.add(option);
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-      }
+                // Update existing options
+                for (let i = 0;  i < data.versions.length; i++) {
+                var option = document.createElement("option");
+                option.text = data.versions[i];
+                option.value = data.versions[i];
+                selectElement.add(option);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+
+        function check_testOptions() {
+            fetch('/check_options', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Get references to the select elements
+                const selectElement1 = document.getElementById("option1");
+                const selectElement2 = document.getElementById("option3");
+
+                console.log("Options: " + data.options);
+
+                if (!selectElement1 || !selectElement2) {
+                    console.error('Select elements not found in the DOM');
+                    return;
+                }
+
+                if (data.options) {
+                    selectElement1.disabled = false;
+                    selectElement2.disabled = false;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
 
       window.onload = get_versions;
     </script>

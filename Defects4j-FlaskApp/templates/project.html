@@ -73,11 +73,11 @@
                     <div class="row" id="mutation_options">
                         <div class="col ml-3">
                             <form id="generateForm" action="javascript:compile()">
-                                <input type="checkbox" value="extend" name="mycheckbox" id="option1">
+                                <input type="checkbox" value="extend" name="mycheckbox" id="option1" disabled>
                                 <label for="option1"> Include student test cases.</label><br>
                                 <input type="checkbox" value="exclude" name="mycheckbox" id="option2" checked>
                                 <label for="option2"> Include developer test cases.</label><br>
-                                <input type="checkbox" value="exclude" name="mycheckbox" id="option3">
+                                <input type="checkbox" value="exclude" name="mycheckbox" id="option3" disabled>
                                 <label for="option3"> Exclude killed mutants.</label><br>
                                 <div class="row" style="display: flex; flex-direction: row; grid-gap: 10px; margin-top: 10px;">
                                     <button type="submit" class="submit" id="generateBtn">
@@ -138,6 +138,8 @@
                         jumpToLine(parseInt(this.innerText));
                     });
                 });
+
+                window.onload = check_testOptions;
             </script>
         </div>
         <div class="split my-5 p-3">
