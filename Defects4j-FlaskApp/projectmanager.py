@@ -21,13 +21,14 @@ def get_project_versions(project):
     return df['bug.id'].tolist()
 
 def get_projects_fromjson():
-    path = pathlib.Path().resolve() / "data.json"
+    file = "checked_out_projects.json"
+    path = pathlib.Path().resolve() / file
     project_list = list()
 
     if os.path.isfile(path) and os.access(path, os.R_OK):
         # checks if file exists
         print("File exists and is readable")
-        f = open('data.json')
+        f = open(file)
         data = json.load(f)
 
         for i in data:
@@ -37,7 +38,7 @@ def get_projects_fromjson():
         f.close()
     else:
         print("Either file is missing or is not readable, creating file...")
-        with io.open(os.path.join(pathlib.Path().resolve(), 'data.json'), 'w') as db_file:
+        with io.open(os.path.join(pathlib.Path().resolve(), file), 'w') as db_file:
             db_file.write(json.dumps([]))
 
     return project_list

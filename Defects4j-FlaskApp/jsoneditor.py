@@ -1,45 +1,80 @@
 import json
 
-def create_json_save(save_data):
+def save_checked_out_project(project, version):
+    with open("checked_out_projects.json") as imported_projects:
+        data = json.load(imported_projects)
 
-    with open("static/projectdata/save.json", 'r') as json_file:
-        data = json.load(json_file)
+    project_name_version = project + "-" + version
 
-    new_save = True
+    project_exists = False
+    for item in data:
+        if item.get("name") == project_name_version:
+            project_exists = True
+            break
 
-    for project in data["projects"]:
-        if save_data["project"] == project["project"]:
-            if save_data["version"] == project["data"]["version"]:
-                project["data"]["content"]["code"] = save_data["content"]
-                new_save = False
+    if not project_exists:
+        data.append({
+            "name": project_name_version,
+        })
 
-    if new_save:
-        project_structure = {
-            "project": save_data["project"],
-            "data": {
-                "version": save_data["version"],
-                "content": {
-                    "code": save_data["content"]
-                }
-            }
-        }
-        data["projects"].append(project_structure)
+    with open("checked_out_projects.json", 'w') as json_file:
+        json.dump(data, json_file, indent=4, separators=(',', ': '))
 
-    # Write the JSON file
-    with open("static/projectdata/save.json", 'w') as json_file:
-        json.dump(data, json_file, indent=4)
-
-def load_json_save(name, version):
-
-    with open("static/projectdata/save.json", 'r') as json_file:
-        data = json.load(json_file)  # Load the JSON content
-    
-    project_code = ""
-
-    # Iterate through each project and extract the code
-    for project in data["projects"]:
-        if name == project["project"]:
-            if version == project["data"]["version"]:
-                project_code = project["data"]["content"]["code"]
+def wipe_checked_out_projects_file():
+    with open("checked_out_projects.json", 'w') as json_file:
+        json.dump([], json_file, indent=4, separators=(',', ': '))
         
-    return project_code
+
+def save_imported_project_in_json(project, metric_data = None, coverage_data = None, total_mutants = None):
+    with open("data.json") as imported_projects:
+        data = json.load(imported_projects)
+
+    project_exists = False
+    for item in data:
+        if item.get("name") == project:
+            item["metric_data"] = metric_data if metric_data is not None else []
+            item["coverage_data"] = coverage_data if coverage_data is not None else []
+            item["total_mutants"] = total_mutants if total_mutants is not None else 0
+            project_exists = True
+            break
+
+    if not project_exists:
+        data.append({
+            "name": project,
+            "metric_data" : metric_data if metric_data is not None else [],
+            "coverage_data" : coverage_data if coverage_data is not None else [],
+            "total_mutants" : total_mutants if total_mutants is not None else 0
+        })
+
+    with open("data.json", 'w') as json_file:
+        json.dump(data, json_file, indent=4, separators=(',', ': '))
+
+
+
+def read_imported_project_from_json(project):
+    """
+    Reads the imported project data from the data.json file.
+
+    :param project: The name of the project
+    :param version: The version of the project
+    :return: A dictionary containing the project's data if it exists, otherwise None
+    """
+    project_name_version = project
+
+    try:
+        with open("data.json", 'r') as json_file:
+            data = json.load(json_file)
+
+        for item in data:
+            if item.get("name") == project_name_version:
+                return item
+
+        print(f"Project {project_name_version} not found in data.json")
+        return None
+
+    except FileNotFoundError:
+        print("data.json file not found")
+        return None
+    except json.JSONDecodeError:
+        print("Error decoding JSON from data.json")
+        return None
