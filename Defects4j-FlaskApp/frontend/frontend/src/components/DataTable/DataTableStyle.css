@@ -1,0 +1,27 @@
+/* Ensure killed mutants turn green */
+.killed-mutant {
+  background-color: lightgreen !important;
+  color: black !important;
+}
+
+.striped-row {
+  background-color: #d3d3d3 !important;
+}
+
+/* Ensure DataTables does not override row color */
+table.dataTable tbody tr.killed-mutant {
+  background-color: lightgreen !important;
+}
+
+/* Add padding of 4px to each td */
+table.dataTable tbody td {
+  padding: 6px !important;
+  flex-wrap: wrap;
+}
+
+/* Add a gray top and bottom border to each tr */
+table.dataTable tbody tr {
+  border-top: 1px solid #d3d3d3; /* Light gray border on top */
+  border-bottom: 1px solid #d3d3d3; /* Light gray border on bottom */
+  flex-wrap: wrap;
+}
