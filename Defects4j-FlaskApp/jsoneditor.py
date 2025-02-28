@@ -1,33 +1,47 @@
 import json
+import logging
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 def save_checked_out_project(project, version):
-    with open("checked_out_projects.json") as imported_projects:
-        data = json.load(imported_projects)
+    try:
+        with open("checked_out_projects.json", 'r') as imported_projects:
+            data = json.load(imported_projects)
+            if not isinstance(data, list):
+                data = []
+    except (FileNotFoundError, json.JSONDecodeError):
+        data = []
 
     project_name_version = project + "-" + version
-
     project_exists = False
+
     for item in data:
-        if item.get("name") == project_name_version:
+        if item.get(project_name_version):
             project_exists = True
             break
 
     if not project_exists:
         data.append({
-            "name": project_name_version,
+            project_name_version: True
         })
 
     with open("checked_out_projects.json", 'w') as json_file:
         json.dump(data, json_file, indent=4, separators=(',', ': '))
 
-def wipe_checked_out_projects_file():
+def wipe_checked_out_projects():
     with open("checked_out_projects.json", 'w') as json_file:
         json.dump([], json_file, indent=4, separators=(',', ': '))
-        
 
-def save_imported_project_in_json(project, metric_data = None, coverage_data = None, total_mutants = None):
-    with open("data.json") as imported_projects:
-        data = json.load(imported_projects)
+def save_imported_project_in_json(project, metric_data=None, coverage_data=None, total_mutants=None):
+    try:
+        with open("data.json", 'r') as imported_projects:
+            data = json.load(imported_projects)
+    except FileNotFoundError:
+        data = []
+    except json.JSONDecodeError:
+        data = []
 
     project_exists = False
     for item in data:
@@ -41,24 +55,15 @@ def save_imported_project_in_json(project, metric_data = None, coverage_data = N
     if not project_exists:
         data.append({
             "name": project,
-            "metric_data" : metric_data if metric_data is not None else [],
-            "coverage_data" : coverage_data if coverage_data is not None else [],
-            "total_mutants" : total_mutants if total_mutants is not None else 0
+            "metric_data": metric_data if metric_data is not None else [],
+            "coverage_data": coverage_data if coverage_data is not None else [],
+            "total_mutants": total_mutants if total_mutants is not None else 0
         })
 
     with open("data.json", 'w') as json_file:
         json.dump(data, json_file, indent=4, separators=(',', ': '))
 
-
-
 def read_imported_project_from_json(project):
-    """
-    Reads the imported project data from the data.json file.
-
-    :param project: The name of the project
-    :param version: The version of the project
-    :return: A dictionary containing the project's data if it exists, otherwise None
-    """
     project_name_version = project
 
     try:
@@ -69,12 +74,12 @@ def read_imported_project_from_json(project):
             if item.get("name") == project_name_version:
                 return item
 
-        print(f"Project {project_name_version} not found in data.json")
+        logger.info(f"Project {project_name_version} not found in data.json")
         return None
 
     except FileNotFoundError:
-        print("data.json file not found")
+        logger.info("data.json file not found")
         return None
     except json.JSONDecodeError:
-        print("Error decoding JSON from data.json")
+        logger.info("Error decoding JSON from data.json")
         return None

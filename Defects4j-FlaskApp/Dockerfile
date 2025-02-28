@@ -6,6 +6,7 @@ FROM ubuntu:22.04
 
 # Timezone
 ENV TZ=America/Los_Angeles
+ENV PYTHONUNBUFFERED=1
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 RUN \
@@ -49,7 +50,7 @@ RUN echo "JAVA_HOME: $JAVA_HOME"
 
 # ----------- Step 1. Clone defects4j from github --------------
 WORKDIR /
-RUN git clone https://github.com/PedroTav/defects4j.git defects4j
+RUN git clone https://github.com/xavi-999/defects4j.git defects4j
 
 # ----------- Step 2. Initialize Defects4J ---------------------
 WORKDIR /defects4j
@@ -71,6 +72,10 @@ WORKDIR /app
 COPY . /app
 RUN pip install -U Flask
 RUN pip install flask-cors
+RUN pip install lxml
+RUN pip install tree_sitter
+RUN pip install tree_sitter_java
+
 EXPOSE 8000
 
 CMD python3 ./defects4jUI.py

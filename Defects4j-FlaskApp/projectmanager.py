@@ -4,6 +4,7 @@ import pathlib
 import json
 import pandas as pd
 
+
 def get_projects_id():
     project_list = list()
     path = os.path.split(os.getcwd())[0] + 'defects4j/framework/projects'
@@ -32,8 +33,7 @@ def get_projects_fromjson():
         data = json.load(f)
 
         for i in data:
-            if "name" in i:
-                project_list.append(i['name'])
+            project_list.append(list(i.keys())[0])
 
         f.close()
     else:
