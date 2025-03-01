@@ -1,8 +1,9 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import ScreenHero from "../../components/ScreenHero/ScreenHero.view";
 import { faChalkboardTeacher } from "@fortawesome/free-solid-svg-icons";
 import { ButtonLoader } from "../../components/ButtonLoader";
 import { UserAuth } from "../../context/auth";
+import { redirect, useNavigate } from "react-router";
 
 function TeacherView() {
   const [isLoading, setIsLoading] = React.useState(false);
@@ -10,7 +11,8 @@ function TeacherView() {
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
 
-  const { signIn } = UserAuth();
+  const { signIn, user } = UserAuth();
+  const navigate = useNavigate();
 
   const handleLogin = useCallback(
     async (event) => {
@@ -27,6 +29,14 @@ function TeacherView() {
     },
     [username, password, signIn],
   );
+
+  // useEffect(() => {
+  //   if(user){
+  //     return;
+  //   }
+
+  //   navigate("/teacher/manage-classes");
+  // }, [navigate, user])
   return (
     <div className="flex flex-col items-center w-full justify-center h-screen">
       <ScreenHero

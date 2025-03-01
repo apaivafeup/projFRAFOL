@@ -15,7 +15,8 @@ type Route =
   | "analyzer"
   | "killMatrix"
   | "leaderboard"
-  | "teacherView";
+  | "teacherView"
+  | "studentView";
 
 function NavbarView() {
   const navigate = useNavigate();
@@ -42,8 +43,13 @@ function NavbarView() {
     navigate("/teacher");
   }, [navigate]);
 
+  const handleStudentViewClick = useCallback(() => {
+    setSelectedRoute("studentView");
+    navigate("/student");
+  }, [navigate]);
+
   return (
-    <div className="hidden md:min-w-1/10 border-r-1 h-screen shadow-md rounded-2xl border-r-gray-200 md:flex flex-col gap-3 text-black pt-4 p-1">
+    <div className="hidden md:min-w-1/10 border-r-1 h-screen fixed  shadow-md rounded-2xl border-r-gray-200 md:flex flex-col gap-3 text-black pt-4 p-1">
       <button
         className="font-semibold border-b-1 border-b-gray-200"
         style={{ paddingBottom: 8 }}
@@ -102,16 +108,16 @@ function NavbarView() {
       <button
         style={{ borderRadius: 6 }}
         className={`p-1 rounded-2xl font-semibold hover:bg-blue-200 items-start flex ${
-          selectedRoute === "leaderboard" ? "bg-blue-200" : ""
+          selectedRoute === "studentView" ? "bg-blue-200" : ""
         }`}
         onClick={() => {
-          setSelectedRoute("leaderboard");
-          navigate("/leaderboard");
+          setSelectedRoute("studentView");
+          navigate("/student");
         }}
       >
         <div
           className={`hover:text-blue-500 flex items-center ${
-            selectedRoute === "leaderboard" ? "text-blue-600" : ""
+            selectedRoute === "studentView" ? "text-blue-600" : ""
           }`}
         >
           <FontAwesomeIcon icon={faTrophy} className="mr-2" />

@@ -4,6 +4,7 @@ import { useCurrentProject } from "../../context";
 import { useCallback, useRef } from "react";
 import { Defects4GuiApiService } from "../../services/Defects4GuiApi";
 import { ButtonLoader } from "../../components/ButtonLoader";
+import Button from "../../components/Button";
 
 export const KillMatrix = () => {
   const {
@@ -57,12 +58,7 @@ export const KillMatrix = () => {
           This can be calculated by running each test against the entire
           mutants, therefore, generating this matrix may take a while
         </p>
-        <button
-          onClick={handleGenerateKillMatrix}
-          className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-        >
-          {isGeneratingKillMatrix ? <ButtonLoader /> : "Generate Kill Matrix"}
-        </button>
+          <Button title="Generate Kill Matrix" onClick={handleGenerateKillMatrix} loading={isGeneratingKillMatrix} />
       </div>
     );
   }
