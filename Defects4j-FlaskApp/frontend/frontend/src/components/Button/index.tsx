@@ -1,15 +1,14 @@
-import ButtonView from './Button.view';
+import ButtonView from "./Button.view";
 
 interface ButtonProps {
-    title: string;
-    onClick: VoidFunction;
-    loading?: boolean;
+  title: string;
+  onClick: VoidFunction;
+  loading?: boolean;
+  props?: object;
 }
 
-function Button({title, onClick, loading}: ButtonProps) {
-  return (
-     <ButtonView title={title} onClick={onClick} loading={loading}/>
-  )
+function Button({ title, onClick, loading, props }: ButtonProps) {
+  return <ButtonView title={title} onClick={onClick} loading={loading} {...props} />;
 }
 
-export default Button
+export default Button;

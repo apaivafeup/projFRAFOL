@@ -19,15 +19,18 @@ createRoot(document.getElementById("root")!).render(
       <StrictMode>
         <div className="flex flex-row w-full h-full">
           <div className="w-1/10">
-          <NavbarView />
+            <NavbarView />
           </div>
           <Routes>
             <Route path="/" element={<App />} />
             <Route path="/analyzer" element={<AnalyzerView />} />
             <Route path="/kill-matrix" element={<KillMatrix />} />
-            <Route path="/teacher-login" element={<TeacherView />}/>
-            <Route path="/teacher" element={<Teacher />}/>
-            <Route path="/teacher/manage-students" element={<ManageStudents />} />
+            <Route path="/teacher-login" element={<TeacherView />} />
+            <Route path="/teacher" element={<Teacher />} />
+            <Route
+              path="/teacher/manage-students"
+              element={<ManageStudents />}
+            />
             <Route path="/teacher/manage-classes" element={<ManageClasses />} />
             <Route path="/student" element={<StudentView />} />
           </Routes>

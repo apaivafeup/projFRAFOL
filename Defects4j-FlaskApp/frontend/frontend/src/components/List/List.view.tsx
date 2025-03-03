@@ -1,17 +1,17 @@
-import ListItemView, { ListItem } from '../ListItem/ListItem.view'
+import ListItemView, { ListItem } from "../ListItem/ListItem.view";
 
 interface ListProps {
-    items: ListItem[];
+  items: ListItem[];
 }
 
-function ListView({items} : ListProps) {
+function ListView({ items }: ListProps) {
   return (
-    <div className='flex flex-col gap-1'>
-        {items.map((item: ListItem) => {
-            return <ListItemView {...item}/>
-        })}
+    <div className="flex flex-col gap-1">
+      {items.map((item: ListItem) => {
+        return <ListItemView key={item.title} {...item} />;
+      })}
     </div>
-  )
+  );
 }
 
-export default ListView
+export default ListView;

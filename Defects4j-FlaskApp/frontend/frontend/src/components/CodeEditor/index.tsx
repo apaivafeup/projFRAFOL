@@ -123,7 +123,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
   );
 
   return (
-    <div className="flex flex-col w-full flex-grow min-h-0 overflow-hidden">
+    <div className="flex flex-col max-w-full flex-grow min-h-0 overflow-hidden">
       <CodeMirror
         ref={editorRef}
         value={code}

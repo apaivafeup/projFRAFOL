@@ -58,7 +58,11 @@ export const KillMatrix = () => {
           This can be calculated by running each test against the entire
           mutants, therefore, generating this matrix may take a while
         </p>
-          <Button title="Generate Kill Matrix" onClick={handleGenerateKillMatrix} loading={isGeneratingKillMatrix} />
+        <Button
+          title="Generate Kill Matrix"
+          onClick={handleGenerateKillMatrix}
+          loading={isGeneratingKillMatrix}
+        />
       </div>
     );
   }

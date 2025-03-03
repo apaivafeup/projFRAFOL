@@ -10,10 +10,10 @@ interface ScreenHeroProps {
 
 function ScreenHero({ icon, title, description }: ScreenHeroProps) {
   return (
-    <div className="flex flex-col items-center w-full justify-center">
+    <div className="flex flex-col items-center w-full p-6 justify-center">
       <FontAwesomeIcon icon={icon} size="6x" className="text-blue-500" />
       <h1 className="text-3xl font-semibold">{title}</h1>
-      <p className="text-gray-500 text-center">{description}</p>
+      <p className="text-gray-500 text-center max-w-[75%]">{description}</p>
     </div>
   );
 }

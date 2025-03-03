@@ -2,7 +2,7 @@ import React, { useCallback, useEffect } from "react";
 import ScreenHero from "../../components/ScreenHero/ScreenHero.view";
 import { faChalkboardTeacher } from "@fortawesome/free-solid-svg-icons";
 import { ButtonLoader } from "../../components/ButtonLoader";
-import { UserAuth } from "../../context/auth";
+import { useAuth } from "../../context/auth";
 import { redirect, useNavigate } from "react-router";
 
 function TeacherView() {
@@ -11,7 +11,7 @@ function TeacherView() {
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
 
-  const { signIn, user } = UserAuth();
+  const { signIn, user } = useAuth();
   const navigate = useNavigate();
 
   const handleLogin = useCallback(

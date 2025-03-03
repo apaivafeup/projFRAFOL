@@ -11,6 +11,8 @@ import {
   onAuthStateChanged,
   User,
   UserCredential,
+  createUserWithEmailAndPassword,
+  updateProfile,
 } from "firebase/auth";
 import { auth } from "../../firebase";
 
@@ -18,13 +20,34 @@ interface AuthContextType {
   user: User | null;
   logout: () => Promise<void>;
   signIn: (email: string, password: string) => Promise<UserCredential>;
+  currentStudentNumber: string;
+  setCurrentStudentNumber: (studentNumber: string) => void;
+  currentClassName: string;
+  setCurrentClassName: (className: string) => void;
+  createUser: (email: string, password: string, studentNumber: string) => void;
 }
 
 const UserContext = createContext<AuthContextType | null>(null);
 
 export const AuthContextProvider = ({ children }: PropsWithChildren) => {
   const [user, setUser] = useState<User | null>(null);
+  const [currentStudentNumber, setCurrentStudentNumber] = useState<string>("");
 
+
+  const createUser = async (email: string, password: string, studentNumber: string) => {
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+  
+      await updateProfile(user, {
+        displayName: studentNumber, 
+      });
+  
+      console.log("User created and student number saved in displayName!");
+    } catch (error) {
+      console.error("Error creating user or saving student number", error);
+    }
+  };
   const signIn = (email: string, password: string) => {
     return signInWithEmailAndPassword(auth, email, password);
   };
@@ -43,12 +66,12 @@ export const AuthContextProvider = ({ children }: PropsWithChildren) => {
   }, []);
 
   return (
-    <UserContext.Provider value={{ user, logout, signIn }}>
+    <UserContext.Provider value={{ user, logout, signIn, currentStudentNumber, setCurrentStudentNumber , createUser}}>
       {children}
     </UserContext.Provider>
   );
 };
 
-export const UserAuth = () => {
+export const useAuth = () => {
   return useContext(UserContext);
 };

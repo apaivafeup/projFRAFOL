@@ -12,9 +12,9 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-    --color-primary: oklch(0.623 0.214 259.815);
-    --color-secondary: oklch(0.882 0.059 254.128);
-    --color-border: oklch(0.928 0.006 264.531);
+  --color-primary: oklch(0.623 0.214 259.815);
+  --color-secondary: oklch(0.882 0.059 254.128);
+  --color-border: oklch(0.928 0.006 264.531);
 }
 
 div:not(.tabview)::-webkit-scrollbar {
@@ -40,3 +40,10 @@ input[type="checkbox"] {
   color: #495057;
   cursor: pointer;
 }
+
+input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: none;
+}
+
