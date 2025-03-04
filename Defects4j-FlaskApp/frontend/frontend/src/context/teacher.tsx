@@ -18,11 +18,6 @@ import {
 } from "../services/Firebase";
 
 type ProjectWithTool = string;
-interface Class {
-  className: string;
-  projects: ProjectWithTool[];
-  studentsSubmissions: StudentSubmission[];
-}
 
 export interface TeacherContextProps {
   currentClassName: string;
@@ -35,6 +30,7 @@ export interface TeacherContextProps {
   currentProjectSubmissions: StudentSubmission[] | null;
   currentClassAdmissions: string[];
   getCurrentClassAdmissions: () => void;
+  getCurrentClassStudents: () => void;
   currentClassStudents: string[];
 }
 
@@ -44,7 +40,9 @@ export const TeacherProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [currentClassName, setCurrentClassName] = useState<string>("");
-  const [currentClassAdmissions, setCurrentClassAdmissions] = useState<string[]>([]);
+  const [currentClassAdmissions, setCurrentClassAdmissions] = useState<
+    string[]
+  >([]);
   const [currentProject, setCurrentProject] = useState<ProjectWithTool | null>(
     null,
   );
@@ -54,7 +52,9 @@ export const TeacherProvider: React.FC<{ children: ReactNode }> = ({
   const [currentProjectSubmissions, setCurrentProjectSubmissions] = useState<
     StudentSubmission[] | null
   >(null);
-  const [currentClassStudents, setCurrentClassStudents] = useState<string[]>([]);
+  const [currentClassStudents, setCurrentClassStudents] = useState<string[]>(
+    [],
+  );
 
   const [allClasses, setAllClasses] = useState<string[]>([]);
 
@@ -100,8 +100,11 @@ export const TeacherProvider: React.FC<{ children: ReactNode }> = ({
     getCurrentClassProjects();
     getCurrentClassAdmissions();
     getCurrentClassStudents();
-
-  }, [getCurrentClassAdmissions, getCurrentClassProjects, getCurrentClassStudents]);
+  }, [
+    getCurrentClassAdmissions,
+    getCurrentClassProjects,
+    getCurrentClassStudents,
+  ]);
 
   useEffect(() => {
     getCurrentProjectSubmissions();
@@ -125,6 +128,7 @@ export const TeacherProvider: React.FC<{ children: ReactNode }> = ({
         currentClassAdmissions,
         getCurrentClassAdmissions,
         currentClassStudents,
+        getCurrentClassStudents,
       }}
     >
       {children}

@@ -15,7 +15,7 @@ const COMPILATION_SUCCESS = "Compilation succeeded.";
 export const MutationCoverage: React.FC = () => {
   const [compilationMessage, setCompilationMessage] = useState<string>("");
   const [isCompiling, setIsCompiling] = useState<boolean>(false);
-  const hasRun = useRef(false); 
+  const hasRun = useRef(false);
 
   const {
     currentProject,
@@ -29,7 +29,7 @@ export const MutationCoverage: React.FC = () => {
     setIsCurrentProjectFirstMutationComplete,
     setJumpToLineNumberOnClassUnderMutation,
   } = useCurrentProject();
-  const {showSnackbar} = useSnackbar();
+  const { showSnackbar, hideSnackbar } = useSnackbar();
 
   const apiService = useRef(new Defects4GuiApiService()).current;
 
@@ -86,7 +86,10 @@ export const MutationCoverage: React.FC = () => {
     const performFirstMutation = async () => {
       if (!currentProject) return;
       setCompilationMessage("");
-      showSnackbar("Please wait while we setup the project's mutants", "success");
+      showSnackbar(
+        "Please wait while we setup the project's mutants",
+        "success",
+      );
       setIsMutating(true);
       try {
         savePartialProject(
@@ -100,6 +103,7 @@ export const MutationCoverage: React.FC = () => {
         setIsCurrentProjectFirstMutationComplete(true);
       } catch (error) {
         setCompilationMessage(error.message);
+        hideSnackbar();
       } finally {
         setIsMutating(false);
       }

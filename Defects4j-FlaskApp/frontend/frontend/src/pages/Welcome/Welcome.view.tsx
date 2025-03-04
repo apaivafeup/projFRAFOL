@@ -192,7 +192,12 @@ function WelcomeView() {
             </select>
           </div>
         </div>
-        <Button title="Import" onClick={handleImportProject} disabled={openProjectLoading} loading={importProjectLoading} />
+        <Button
+          title="Import"
+          onClick={handleImportProject}
+          disabled={openProjectLoading}
+          loading={importProjectLoading}
+        />
         <div className="text-xl font-semibold text-black mt-4">
           Open Project:
         </div>

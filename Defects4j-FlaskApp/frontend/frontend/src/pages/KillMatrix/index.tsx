@@ -114,18 +114,11 @@ export const KillMatrix = () => {
           </tbody>
         </table>
       </div>
-      <div>
-        <button
-          onClick={handleGenerateKillMatrix}
-          className="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-        >
-          {isGeneratingKillMatrix ? (
-            <ButtonLoader />
-          ) : (
-            "Generate Kill Matrix Again"
-          )}
-        </button>
-      </div>
+      <Button
+        title="Generate Kill Matrix Again"
+        onClick={handleGenerateKillMatrix}
+        loading={isGeneratingKillMatrix}
+      />
     </div>
   );
 };

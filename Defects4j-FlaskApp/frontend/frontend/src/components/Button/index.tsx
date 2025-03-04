@@ -1,7 +1,7 @@
 import { ButtonBaseProps } from "@mui/material";
 import ButtonView from "./Button.view";
 
-interface ButtonProps extends ButtonBaseProps{
+interface ButtonProps extends ButtonBaseProps {
   title: string;
   onClick: VoidFunction;
   loading?: boolean;
@@ -9,7 +9,9 @@ interface ButtonProps extends ButtonBaseProps{
 }
 
 function Button({ title, onClick, loading, props }: ButtonProps) {
-  return <ButtonView title={title} onClick={onClick} loading={loading} {...props} />;
+  return (
+    <ButtonView title={title} onClick={onClick} loading={loading} {...props} />
+  );
 }
 
 export default Button;

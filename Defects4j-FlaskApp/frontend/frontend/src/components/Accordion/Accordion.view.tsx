@@ -13,9 +13,13 @@ function AccordionView({
   setExpandedAccordion,
 }: AccordionViewProps) {
   return (
-    <div className="flex flex-row w-full">
+    <div className="flex flex-col w-full gap-1">
       {accordions.map((accordion, index) => (
-        <Suspense fallback={<div className="flex w-full p-2 bg-gray-200">Loading...</div>}>
+        <Suspense
+          fallback={
+            <div className="flex w-full p-2 bg-gray-200">Loading...</div>
+          }
+        >
           <AccordionItem
             key={index}
             expanded={expandedAccordion === `panel${index}`}
@@ -28,8 +32,7 @@ function AccordionView({
             content={accordion.content}
             index={index}
           />
-
-        </Suspense> 
+        </Suspense>
       ))}
     </div>
   );

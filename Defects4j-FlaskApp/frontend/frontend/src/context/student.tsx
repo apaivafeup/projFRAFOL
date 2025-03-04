@@ -11,11 +11,11 @@ import { isAdmittedStudent } from "../services/Firebase";
 import { useAuth } from "./auth";
 
 export interface StudentContextProps {
-    currentStudentNumber: string;
+  currentStudentNumber: string;
   setCurrentStudentNumber: (studentNumber: string) => void;
   currentClassName: string;
   setCurrentClassName: Dispatch<SetStateAction<string>>;
-    isAdmitted: boolean;
+  isAdmitted: boolean;
 }
 
 const StudentContext = createContext<StudentContextProps | null>(null);
@@ -23,21 +23,20 @@ const StudentContext = createContext<StudentContextProps | null>(null);
 export const StudentProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-    const [currentStudentNumber, setCurrentStudentNumber] = useState<string>("");
-    const [currentClassName, setCurrentClassName] = useState<string>("");
-    const [isAdmitted, setIsAdmitted] = useState<boolean>(false);
-    const { user } = useAuth();
+  const [currentStudentNumber, setCurrentStudentNumber] = useState<string>("");
+  const [currentClassName, setCurrentClassName] = useState<string>("");
+  const [isAdmitted, setIsAdmitted] = useState<boolean>(false);
+  const { user } = useAuth();
 
-    useEffect (() => {
-        const fetchIsAdmitted = async () => {  
-      if(!user) return false;
+  useEffect(() => {
+    const fetchIsAdmitted = async () => {
+      if (!user) return false;
       const studentClass = user.photoURL;
+      console.log("studentClass", studentClass);
       return await isAdmittedStudent(user.displayName, studentClass);
-    }
-    fetchIsAdmitted().then((result) => setIsAdmitted(result
-    ));
-    }, [currentStudentNumber, currentClassName, user]);
-
+    };
+    fetchIsAdmitted().then((result) => setIsAdmitted(result));
+  }, [currentStudentNumber, currentClassName, user]);
 
   return (
     <StudentContext.Provider

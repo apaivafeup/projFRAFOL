@@ -10,18 +10,16 @@ import { NavbarProvider } from "./navbar";
 export const AppProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  
-
   return (
     <AuthContextProvider>
       <NavbarProvider>
-      <StudentProvider>
-      <SnackbarProvider>
-        <TeacherProvider>
-          <CurrentProjectProvider>{children}</CurrentProjectProvider>
-        </TeacherProvider>
-      </SnackbarProvider>
-      </StudentProvider>
+        <StudentProvider>
+          <SnackbarProvider>
+            <TeacherProvider>
+              <CurrentProjectProvider>{children}</CurrentProjectProvider>
+            </TeacherProvider>
+          </SnackbarProvider>
+        </StudentProvider>
       </NavbarProvider>
     </AuthContextProvider>
   );

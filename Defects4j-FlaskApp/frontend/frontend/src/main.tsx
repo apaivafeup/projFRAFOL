@@ -23,6 +23,7 @@ createRoot(document.getElementById("root")!).render(
             <Navbar />
           </div>
           <Routes>
+            <Route path="/" element={<App />} />
             <Route path="/select-project" element={<App />} />
             <Route path="/analyzer" element={<AnalyzerView />} />
             <Route path="/kill-matrix" element={<KillMatrix />} />

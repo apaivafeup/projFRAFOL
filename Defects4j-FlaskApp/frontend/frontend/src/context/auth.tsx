@@ -16,7 +16,7 @@ import {
 } from "firebase/auth";
 import { auth } from "../../firebase";
 
-interface AuthContextType {
+export interface AuthContextType {
   user: User | null;
   logout: () => Promise<void>;
   signIn: (email: string, password: string) => Promise<UserCredential>;
@@ -24,7 +24,12 @@ interface AuthContextType {
   setCurrentStudentNumber: (studentNumber: string) => void;
   currentClassName: string;
   setCurrentClassName: (className: string) => void;
-  createUser: (email: string, password: string, studentNumber: string) => void;
+  createUser: (
+    email: string,
+    password: string,
+    studentNumber: string,
+    className: string,
+  ) => Promise<void>;
 }
 
 const UserContext = createContext<AuthContextType | null>(null);
@@ -33,17 +38,25 @@ export const AuthContextProvider = ({ children }: PropsWithChildren) => {
   const [user, setUser] = useState<User | null>(null);
   const [currentStudentNumber, setCurrentStudentNumber] = useState<string>("");
 
-
-  const createUser = async (email: string, password: string, studentNumber: string, className: string) => {
+  const createUser = async (
+    email: string,
+    password: string,
+    studentNumber: string,
+    className: string,
+  ) => {
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password,
+      );
       const user = userCredential.user;
-  
+
       await updateProfile(user, {
-        displayName: studentNumber, 
+        displayName: studentNumber,
         photoURL: className, //store class name in photoURL, useful to have only one source of truth to fetch student metadata
       });
-  
+
       console.log("User created and student number saved in displayName!");
     } catch (error) {
       console.error("Error creating user or saving student number", error);
@@ -68,14 +81,26 @@ export const AuthContextProvider = ({ children }: PropsWithChildren) => {
     };
   }, []);
 
-
   return (
-    <UserContext.Provider value={{ user, logout, signIn, currentStudentNumber, setCurrentStudentNumber , createUser}}>
+    <UserContext.Provider
+      value={{
+        user,
+        logout,
+        signIn,
+        currentStudentNumber,
+        setCurrentStudentNumber,
+        createUser,
+      }}
+    >
       {children}
     </UserContext.Provider>
   );
 };
 
-export const useAuth = () => {
-  return useContext(UserContext);
+export const useAuth = (): AuthContextType => {
+  const context = useContext(UserContext);
+  if (!context) {
+    throw new Error("useAuth must be used within a AuthContextProvider");
+  }
+  return context;
 };

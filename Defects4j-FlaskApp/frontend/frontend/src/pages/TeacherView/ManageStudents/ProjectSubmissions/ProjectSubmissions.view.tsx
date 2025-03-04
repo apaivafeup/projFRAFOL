@@ -8,14 +8,13 @@ function ProjectSubmissionsView() {
   const accordionData = useMemo(() => {
     if (!currentProjectSubmissions) return [];
     return currentProjectSubmissions.map((submission) => {
-        console.log(submission);
       return {
         title: submission.studentNumber,
         content: (
           <div className="grid grid-cols-1 gap-4">
             <div>
               <p className="font-semibold">Submission Date:</p>
-              <p>{submission.submissionDate}</p>
+              <p>{new Date(submission.submissionDate).toLocaleString()}</p>
               <p className="font-semibold">Killed Mutants</p>
               <p>{submission.killedMutants.length}</p>
             </div>

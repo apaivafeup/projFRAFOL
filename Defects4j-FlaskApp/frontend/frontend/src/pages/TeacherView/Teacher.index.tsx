@@ -2,6 +2,7 @@ import React from "react";
 import TabSelector from "../../components/TabSelector";
 import ManageStudents from "./ManageStudents/ManageStudents.view";
 import ManageClasses from "./ManageClasses/ManageClasses.view";
+import MutantMatrix from "./MutantMatrix";
 
 function Teacher() {
   const tabs = [
@@ -10,8 +11,12 @@ function Teacher() {
       content: <ManageClasses></ManageClasses>,
     },
     {
-      name: "Manage Students",
+      name: "Student Submissions",
       content: <ManageStudents />,
+    },
+    {
+      name: "Mutant Matrix",
+      content: <MutantMatrix />,
     },
   ];
 

@@ -1,9 +1,4 @@
-import React, {
-  createContext,
-  useState,
-  useContext,
-  ReactNode,
-} from "react";
+import React, { createContext, useState, useContext, ReactNode } from "react";
 
 export type Route =
   | "select-project"
@@ -25,8 +20,6 @@ export const NavbarProvider: React.FC<{ children: ReactNode }> = ({
 }) => {
   const [currentRoute, setCurrentRoute] = useState<Route>("select-project");
 
-
-
   return (
     <NavbarContext.Provider
       value={{
@@ -43,9 +36,7 @@ export const NavbarProvider: React.FC<{ children: ReactNode }> = ({
 export const useNavbar = (): NavbarContextProps => {
   const context = useContext(NavbarContext);
   if (!context) {
-    throw new Error(
-        "useNavbar must be used within a NavbarProvider",
-    );
+    throw new Error("useNavbar must be used within a NavbarProvider");
   }
   return context;
 };

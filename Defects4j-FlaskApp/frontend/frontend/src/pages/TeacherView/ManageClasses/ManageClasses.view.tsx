@@ -6,8 +6,14 @@ import CurrentStudents from "./components/CurrentStudents";
 import AddClassModal from "./components/AddClassModal";
 
 function ManageClasses() {
-  const { allClasses,  setCurrentClassName, currentClassName, currentClassAdmissions, currentProjectSubmissions, currentClassStudents } =
-    useTeacher();
+  const {
+    allClasses,
+    setCurrentClassName,
+    currentClassName,
+    currentClassAdmissions,
+    currentProjectSubmissions,
+    currentClassStudents,
+  } = useTeacher();
 
   const classes = allClasses.map((className) => {
     return { name: className, value: className };
@@ -28,13 +34,21 @@ function ManageClasses() {
         <AddClassModal />
       </div>
       <div className="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-4 w-full">
-        <Card title="Students" hero={currentClassStudents?.length.toString() || "0"} />
-        <Card title="Submissions" hero={currentProjectSubmissions?.length.toString() || "0"} />
-        <Card title="Pending Requests" hero={currentClassAdmissions?.length.toString() || "0" } />
+        <Card
+          title="Students"
+          hero={currentClassStudents?.length.toString() || "0"}
+        />
+        <Card
+          title="Submissions"
+          hero={currentProjectSubmissions?.length.toString() || "0"}
+        />
+        <Card
+          title="Pending Requests"
+          hero={currentClassAdmissions?.length.toString() || "0"}
+        />
       </div>
-        <PendingStudents />
-        <CurrentStudents />
-
+      <PendingStudents />
+      <CurrentStudents />
     </div>
   );
 }

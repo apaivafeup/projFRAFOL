@@ -18,15 +18,15 @@ function AccordionItemView({
 }: AccordionItemProps) {
   return (
     <div className="flex flex-col">
-    <Accordion expanded={expanded} onChange={onChange} className="w-full">
-      <AccordionSummary
-        aria-controls={`panel${index}-content`}
-        id={`panel${index}-header`}
-      >
-        {title}
-      </AccordionSummary>
-      <AccordionDetails>{content}</AccordionDetails>
-    </Accordion>
+      <Accordion expanded={expanded} onChange={onChange} className="w-full">
+        <AccordionSummary
+          aria-controls={`panel${index}-content`}
+          id={`panel${index}-header`}
+        >
+          {title}
+        </AccordionSummary>
+        <AccordionDetails>{content}</AccordionDetails>
+      </Accordion>
     </div>
   );
 }
