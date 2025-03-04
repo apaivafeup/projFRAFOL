@@ -34,13 +34,14 @@ export const AuthContextProvider = ({ children }: PropsWithChildren) => {
   const [currentStudentNumber, setCurrentStudentNumber] = useState<string>("");
 
 
-  const createUser = async (email: string, password: string, studentNumber: string) => {
+  const createUser = async (email: string, password: string, studentNumber: string, className: string) => {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
   
       await updateProfile(user, {
         displayName: studentNumber, 
+        photoURL: className, //store class name in photoURL, useful to have only one source of truth to fetch student metadata
       });
   
       console.log("User created and student number saved in displayName!");
@@ -56,6 +57,8 @@ export const AuthContextProvider = ({ children }: PropsWithChildren) => {
     return signOut(auth);
   };
 
+  console.log(user);
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       return setUser(currentUser);
@@ -64,6 +67,7 @@ export const AuthContextProvider = ({ children }: PropsWithChildren) => {
       unsubscribe();
     };
   }, []);
+
 
   return (
     <UserContext.Provider value={{ user, logout, signIn, currentStudentNumber, setCurrentStudentNumber , createUser}}>

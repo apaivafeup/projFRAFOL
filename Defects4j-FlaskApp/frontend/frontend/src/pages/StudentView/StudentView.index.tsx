@@ -26,9 +26,9 @@ function StudentView() {
   const {allClasses} = useTeacher();
   const {showSnackbar} = useSnackbar();
 
-  const {currentStudentNumber, setCurrentStudentNumber, isAdmitted} = useStudent();
+  const {setCurrentClassName, setCurrentStudentNumber, isAdmitted} = useStudent();
   const navigate = useNavigate();
-  const { createUser, user } = useAuth()
+  const { createUser, user, signIn } = useAuth()
 
 
 
@@ -41,38 +41,38 @@ function StudentView() {
       }
       try {
         setIsLoading(true);
-        await createUser(email, password, username);
+        await createUser(email, password, username, classSelection);
         await createStudent(username, classSelection);
         setCurrentStudentNumber(username);
-        navigate("/student/submission");
+        setCurrentClassName(classSelection);
       } catch (error: unknown) {
         showSnackbar((error as Error).message, "error");
       }finally{
         setIsLoading(false);
       }
     }
-    , [username, classSelection, email, password, showSnackbar, createUser, setCurrentStudentNumber, navigate]);
+    , [username, classSelection, email, password, showSnackbar, createUser, setCurrentStudentNumber, setCurrentClassName]);
 
 
   const handleLogin = useCallback(
     async (event: { preventDefault: () => void; }) => {
       event.preventDefault();
-      if(!username || !classSelection){
+      if(!email || !classSelection){
         showSnackbar("Please input your student number and select your class", "error");
         return;
       }
       try {
         setIsLoading(true);
-        await createStudent(username, classSelection);
-        setCurrentStudentNumber(username);
-        navigate("/student/submission");
+        const { user } = await signIn(email, password);
+        setCurrentStudentNumber(user?.displayName);
+        setCurrentClassName(classSelection);
       } catch (error: unknown) {
         showSnackbar((error as Error).message, "error");
       }finally{
         setIsLoading(false);
       }
     },
-    [username, classSelection, showSnackbar, setCurrentStudentNumber, navigate],
+    [email, classSelection, showSnackbar, signIn, password, setCurrentStudentNumber, setCurrentClassName],
   );
 
   const handleSubmit = useCallback((event: React.FormEvent<HTMLFormElement>) => {
@@ -102,7 +102,7 @@ function StudentView() {
     }
   }, [isAdmitted, navigate, user])
 
-  if(currentStudentNumber){
+  if(user && !isAdmitted){
     return <div className="flex flex-col items-center w-full justify-center h-screen">
             <ScreenHero
         icon={faCheck}

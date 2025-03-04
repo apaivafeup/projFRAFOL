@@ -5,6 +5,7 @@ import { AuthContextProvider, useAuth } from "./auth";
 import { SnackbarProvider } from "./snackbar";
 import { TeacherProvider } from "./teacher";
 import { StudentProvider } from "./student";
+import { NavbarProvider } from "./navbar";
 
 export const AppProvider: React.FC<{ children: ReactNode }> = ({
   children,
@@ -13,6 +14,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({
 
   return (
     <AuthContextProvider>
+      <NavbarProvider>
       <StudentProvider>
       <SnackbarProvider>
         <TeacherProvider>
@@ -20,6 +22,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({
         </TeacherProvider>
       </SnackbarProvider>
       </StudentProvider>
+      </NavbarProvider>
     </AuthContextProvider>
   );
 };

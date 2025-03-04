@@ -1,6 +1,7 @@
+import { ButtonBaseProps } from "@mui/material";
 import ButtonView from "./Button.view";
 
-interface ButtonProps {
+interface ButtonProps extends ButtonBaseProps{
   title: string;
   onClick: VoidFunction;
   loading?: boolean;

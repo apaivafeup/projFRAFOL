@@ -4,7 +4,6 @@ import SelectSearch from "../../../components/SelectSearch";
 import { useTeacher } from "../../../context/teacher";
 import ProjectSubmissionsView from "./ProjectSubmissions/ProjectSubmissions.view";
 import Button from "../../../components/Button";
-import { addSubmission } from "../../../services/Firebase";
 
 function ManageStudents() {
   const { currentClassProjects, currentProject, setCurrentProject, currentClassName } =

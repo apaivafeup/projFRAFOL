@@ -3,8 +3,8 @@ import React, { Suspense } from "react";
 export interface ListItem {
   title: string;
   logo: React.ReactNode;
-  onSuccess: (id: string) => void;
-  onDecline: () => void;
+  onSuccess?: (id: string) => void;
+  onDecline?: (id: string) => void;
 }
 
 function ListItemView({ title, logo, onSuccess, onDecline }: ListItem) {
@@ -17,8 +17,8 @@ function ListItemView({ title, logo, onSuccess, onDecline }: ListItem) {
         {logo}
         <div>{title}</div>
       </div>
-      <div className="flex flex-row font-semibold  items-center justify-center gap-2">
-        <button
+      {(onSuccess || onDecline) && <div className="flex flex-row font-semibold  items-center justify-center gap-2">
+        {onSuccess && <button
           onClick={() => {
             onSuccess(title);
           }}
@@ -26,15 +26,19 @@ function ListItemView({ title, logo, onSuccess, onDecline }: ListItem) {
           className="p-2 hover:bg-blue-500 hover:scale-110  ease-in duration-200 text-blue-500 hover:text-white bg-blue-200 items-center"
         >
           Accept
-        </button>
+        </button>}
+        {onDecline &&
         <button
-          onClick={onDecline}
+          onClick={() => {
+            onDecline(title);
+          }}
           style={{ borderRadius: 8 }}
           className="p-2 rounded-lg bg-red-300 hover:bg-red-400 hover:scale-110  ease-in duration-200 hover:text-white items-center"
         >
-          Decline
+          Remove
         </button>
-      </div>
+        }
+      </div>}
     </div>
     </Suspense>
   );

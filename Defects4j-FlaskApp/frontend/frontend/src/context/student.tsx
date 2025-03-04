@@ -8,6 +8,7 @@ import React, {
   useEffect,
 } from "react";
 import { isAdmittedStudent } from "../services/Firebase";
+import { useAuth } from "./auth";
 
 export interface StudentContextProps {
     currentStudentNumber: string;
@@ -25,15 +26,17 @@ export const StudentProvider: React.FC<{ children: ReactNode }> = ({
     const [currentStudentNumber, setCurrentStudentNumber] = useState<string>("");
     const [currentClassName, setCurrentClassName] = useState<string>("");
     const [isAdmitted, setIsAdmitted] = useState<boolean>(false);
+    const { user } = useAuth();
 
     useEffect (() => {
         const fetchIsAdmitted = async () => {  
-    if(!currentStudentNumber || !currentClassName) return false;
-      return await isAdmittedStudent(currentStudentNumber, currentClassName);
+      if(!user) return false;
+      const studentClass = user.photoURL;
+      return await isAdmittedStudent(user.displayName, studentClass);
     }
     fetchIsAdmitted().then((result) => setIsAdmitted(result
     ));
-    }, [currentStudentNumber, currentClassName]);
+    }, [currentStudentNumber, currentClassName, user]);
 
 
   return (

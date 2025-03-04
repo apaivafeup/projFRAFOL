@@ -7,6 +7,7 @@ import { ButtonLoader } from "../../components/ButtonLoader";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTable } from "@fortawesome/free-solid-svg-icons";
 import { Circles } from "react-loader-spinner";
+import Button from "@components/Button";
 
 function WelcomeView() {
   const [importProjects, setImportProjects] = useState<string[]>([]);
@@ -174,7 +175,7 @@ function WelcomeView() {
               ))}
             </select>
           </div>
-          <div className="mt-2 flex flex-col">
+          <div className="mt-2 flex flex-col mb-2">
             <label className="text-black">Version</label>
             <select
               name="select_version"
@@ -191,14 +192,7 @@ function WelcomeView() {
             </select>
           </div>
         </div>
-        <button
-          onClick={handleImportProject}
-          className="mt-2 w-24 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-center"
-          disabled={openProjectLoading}
-        >
-          {importProjectLoading ? <ButtonLoader /> : "Import"}
-        </button>
-
+        <Button title="Import" onClick={handleImportProject} disabled={openProjectLoading} loading={importProjectLoading} />
         <div className="text-xl font-semibold text-black mt-4">
           Open Project:
         </div>
@@ -219,7 +213,7 @@ function WelcomeView() {
               ))}
             </select>
           </div>
-          <div className="mt-2 flex flex-col">
+          <div className="mt-2 flex flex-col mb-2">
             <label className="text-black">Mutation Tool</label>
             <select
               name="select_project"
@@ -236,13 +230,12 @@ function WelcomeView() {
             </select>
           </div>
         </div>
-        <button
-          disabled={importProjectLoading}
+        <Button
+          title="Open"
           onClick={handleOpenProject}
-          className="mt-2 w-24 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-        >
-          {openProjectLoading ? <ButtonLoader /> : "Open"}
-        </button>
+          disabled={importProjectLoading}
+          loading={openProjectLoading}
+        />
       </div>
     </div>
   );

@@ -12,6 +12,7 @@ import {
   getAllClasses,
   getClassAdmissions,
   getClassProjects,
+  getClassStudents,
   getClassSubmissions,
   StudentSubmission,
 } from "../services/Firebase";
@@ -33,6 +34,8 @@ export interface TeacherContextProps {
   currentClassProjects: ProjectWithTool[] | null;
   currentProjectSubmissions: StudentSubmission[] | null;
   currentClassAdmissions: string[];
+  getCurrentClassAdmissions: () => void;
+  currentClassStudents: string[];
 }
 
 const TeacherContext = createContext<TeacherContextProps | null>(null);
@@ -51,6 +54,8 @@ export const TeacherProvider: React.FC<{ children: ReactNode }> = ({
   const [currentProjectSubmissions, setCurrentProjectSubmissions] = useState<
     StudentSubmission[] | null
   >(null);
+  const [currentClassStudents, setCurrentClassStudents] = useState<string[]>([]);
+
   const [allClasses, setAllClasses] = useState<string[]>([]);
 
   async function fetchClasses() {
@@ -64,7 +69,9 @@ export const TeacherProvider: React.FC<{ children: ReactNode }> = ({
 
   const getCurrentClassProjects = useCallback(async () => {
     if (!currentClassName) return;
+    console.log("Fetching projects for class", currentClassName);
     const projects = await getClassProjects(currentClassName);
+    console.log("Projects for class", currentClassName, projects);
     setCurrentClassProjects(projects);
   }, [currentClassName]);
 
@@ -83,17 +90,22 @@ export const TeacherProvider: React.FC<{ children: ReactNode }> = ({
     setCurrentClassAdmissions(admissions);
   }, [currentClassName]);
 
+  const getCurrentClassStudents = useCallback(async () => {
+    if (!currentClassName) return;
+    const students = await getClassStudents(currentClassName);
+    setCurrentClassStudents(students);
+  }, [currentClassName]);
+
   useEffect(() => {
     getCurrentClassProjects();
-  }, [getCurrentClassProjects]);
+    getCurrentClassAdmissions();
+    getCurrentClassStudents();
+
+  }, [getCurrentClassAdmissions, getCurrentClassProjects, getCurrentClassStudents]);
 
   useEffect(() => {
     getCurrentProjectSubmissions();
   }, [getCurrentProjectSubmissions]);
-
-    useEffect(() => {
-        getCurrentClassAdmissions();
-    }, [getCurrentClassAdmissions]);
 
   useEffect(() => {
     fetchClasses();
@@ -111,6 +123,8 @@ export const TeacherProvider: React.FC<{ children: ReactNode }> = ({
         currentProject,
         setCurrentProject,
         currentClassAdmissions,
+        getCurrentClassAdmissions,
+        currentClassStudents,
       }}
     >
       {children}

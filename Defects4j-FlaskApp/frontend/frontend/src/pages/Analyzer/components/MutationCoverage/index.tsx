@@ -1,20 +1,21 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { CoverageCard } from "../../../../components/CoverageCard";
-import { useCurrentProject } from "../../../../context";
-import { Defects4GuiApiService } from "../../../../services/Defects4GuiApi";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { CoverageCard } from "@components/CoverageCard";
+import { useCurrentProject } from "@context/currentProject";
+import { Defects4GuiApiService } from "@services/Defects4GuiApi";
 import CodeMirror from "@uiw/react-codemirror";
 import { abyss } from "@uiw/codemirror-themes-all";
 
 import { basicSetup } from "codemirror";
-import { ButtonLoader } from "../../../../components/ButtonLoader";
+import { ButtonLoader } from "@components/ButtonLoader";
+import CurrentProjectHeader from "@components/CurrentProjectHeader";
+import { useSnackbar } from "@context/snackbar";
 
 const COMPILATION_SUCCESS = "Compilation succeeded.";
 
-interface MutationCoverageProps {}
-export const MutationCoverage: React.FC<MutationCoverageProps> = () => {
+export const MutationCoverage: React.FC = () => {
   const [compilationMessage, setCompilationMessage] = useState<string>("");
   const [isCompiling, setIsCompiling] = useState<boolean>(false);
-  const hasRun = useRef(false); // Keeps state across re-renders
+  const hasRun = useRef(false); 
 
   const {
     currentProject,
@@ -28,6 +29,8 @@ export const MutationCoverage: React.FC<MutationCoverageProps> = () => {
     setIsCurrentProjectFirstMutationComplete,
     setJumpToLineNumberOnClassUnderMutation,
   } = useCurrentProject();
+  const {showSnackbar} = useSnackbar();
+
   const apiService = useRef(new Defects4GuiApiService()).current;
 
   const handleCompile = useCallback(async () => {
@@ -58,7 +61,7 @@ export const MutationCoverage: React.FC<MutationCoverageProps> = () => {
         ),
       );
     } catch (error) {
-      setCompilationMessage(error.message);
+      setCompilationMessage((error as Error).message);
     } finally {
       setIsMutating(false);
     }
@@ -83,6 +86,7 @@ export const MutationCoverage: React.FC<MutationCoverageProps> = () => {
     const performFirstMutation = async () => {
       if (!currentProject) return;
       setCompilationMessage("");
+      showSnackbar("Please wait while we setup the project's mutants", "success");
       setIsMutating(true);
       try {
         savePartialProject(
@@ -107,14 +111,7 @@ export const MutationCoverage: React.FC<MutationCoverageProps> = () => {
 
   return (
     <>
-      <div className="flex flex-row gap-4 text-black">
-        <label className="text-xl font-semibold" htmlFor="">
-          Working Project: {currentProject?.name}
-        </label>
-        <label className="text-xl font-semibold" htmlFor="">
-          Mutation Tool: {currentProject?.mutationTool}
-        </label>
-      </div>
+      <CurrentProjectHeader />
       <div className=" grid md:grid-cols-3 gap-4 mt-4">
         <CoverageCard
           title="Code Coverage"
