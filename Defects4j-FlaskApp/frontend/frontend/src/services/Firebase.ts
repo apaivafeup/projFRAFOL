@@ -97,14 +97,16 @@ export const getAllClasses = async () => {
 
 export const getClassProjects = async (className: string) => {
   const q = query(collection(db, "classes", className, "projects"));
-  const querySnapshot = await getDocs(q);
-  console.log(querySnapshot);
-  const projects: string[] = [];
-  querySnapshot.forEach((doc) => {
-    console.log(doc);
-    projects.push(doc.id);
-  });
-  return projects;
+  try {
+    const querySnapshot = await getDocs(q);
+    const projects: string[] = [];
+    querySnapshot.forEach((doc) => {
+      projects.push(doc.id);
+    });
+    return projects;
+  } catch {
+    throw new Error("You are not a teacher :)");
+  }
 };
 
 export const getClassSubmissions = async (
@@ -121,15 +123,19 @@ export const getClassSubmissions = async (
       "submissions",
     ),
   );
-  const querySnapshot = await getDocs(q);
-  const submissions: StudentSubmission[] = [];
-  querySnapshot.forEach((doc) => {
-    submissions.push({
-      ...(doc.data() as StudentSubmission),
-      studentNumber: doc.id,
+  try {
+    const querySnapshot = await getDocs(q);
+    const submissions: StudentSubmission[] = [];
+    querySnapshot.forEach((doc) => {
+      submissions.push({
+        ...(doc.data() as StudentSubmission),
+        studentNumber: doc.id,
+      });
     });
-  });
-  return submissions;
+    return submissions;
+  } catch {
+    throw new Error("You are not a teacher :)");
+  }
 };
 
 export const getClassAdmissions = async (className: string) => {
