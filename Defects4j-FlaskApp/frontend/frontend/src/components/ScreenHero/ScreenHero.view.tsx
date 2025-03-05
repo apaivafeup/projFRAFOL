@@ -1,14 +1,12 @@
 import { IconDefinition } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
-
 interface ScreenHeroProps {
   icon: IconDefinition;
   title: string;
   description: string;
 }
 
-function ScreenHero({ icon, title, description }: ScreenHeroProps) {
+function ScreenHeroView({ icon, title, description }: ScreenHeroProps) {
   return (
     <div className="flex flex-col items-center w-full p-6 justify-center">
       <FontAwesomeIcon icon={icon} size="6x" className="text-blue-500" />
@@ -18,4 +16,4 @@ function ScreenHero({ icon, title, description }: ScreenHeroProps) {
   );
 }
 
-export default ScreenHero;
+export default ScreenHeroView;
