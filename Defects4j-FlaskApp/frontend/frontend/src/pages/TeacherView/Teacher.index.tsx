@@ -4,7 +4,7 @@ import ManageStudents from "./ManageStudents/ManageStudents.view";
 import ManageClasses from "./ManageClasses/ManageClasses.view";
 import MutantMatrix from "./MutantMatrix";
 
-function Teacher() {
+function TeacherDashboard() {
   const tabs = [
     {
       name: "Manage Classes",
@@ -27,4 +27,4 @@ function Teacher() {
   );
 }
 
-export default Teacher;
+export default TeacherDashboard;

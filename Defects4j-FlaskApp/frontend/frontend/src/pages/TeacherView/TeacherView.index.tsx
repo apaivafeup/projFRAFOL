@@ -4,6 +4,8 @@ import { faChalkboardTeacher } from "@fortawesome/free-solid-svg-icons";
 import { ButtonLoader } from "../../components/ButtonLoader";
 import { useAuth } from "../../context/auth";
 import { redirect, useNavigate } from "react-router";
+import { useSnackbar } from "@context/snackbar";
+import Button from "@components/Button";
 
 function TeacherView() {
   const [isLoading, setIsLoading] = React.useState(false);
@@ -11,14 +13,16 @@ function TeacherView() {
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
 
-  const { signIn, user } = useAuth();
+  const { signIn, user, isTeacher, logout } = useAuth();
   const navigate = useNavigate();
+  const {showSnackbar} = useSnackbar();
 
   const handleLogin = useCallback(
     async (event) => {
       event.preventDefault();
       setError("");
       try {
+        console.log("Logging in");
         setIsLoading(true);
         await signIn(username, password);
         setIsLoading(false);
@@ -30,13 +34,17 @@ function TeacherView() {
     [username, password, signIn],
   );
 
-  // useEffect(() => {
-  //   if(user){
-  //     return;
-  //   }
-
-  //   navigate("/teacher/manage-classes");
-  // }, [navigate, user])
+  useEffect(() => {
+    if(!user) {
+      return;
+    }
+  
+    if(isTeacher) {
+      navigate("/teacher/dashboard");
+      return
+    }
+    showSnackbar("You are not a teacher :)", "error");
+  }, [isTeacher, logout, navigate, showSnackbar, user])
   return (
     <div className="flex flex-col items-center w-full justify-center h-screen">
       <ScreenHero
@@ -86,13 +94,15 @@ function TeacherView() {
             className="border-1 border-gray-200 p-2 rounded-lg"
           />
         </div>
+        <div className="mt-4 items-center">
+      <Button
+            title={"Login"}
+            loading={isLoading}
+            onClick={() => {}}
+            type={"submit"}></Button>
+          </div>
       </form>
-      <button
-        type="submit"
-        className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-      >
-        {isLoading ? <ButtonLoader /> : "Login"}
-      </button>
+
     </div>
   );
 }

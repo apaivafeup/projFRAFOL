@@ -3,6 +3,7 @@ import {
   PropsWithChildren,
   useContext,
   useEffect,
+  useMemo,
   useState,
 } from "react";
 import {
@@ -30,6 +31,7 @@ export interface AuthContextType {
     studentNumber: string,
     className: string,
   ) => Promise<void>;
+  isTeacher: boolean;
 }
 
 const UserContext = createContext<AuthContextType | null>(null);
@@ -37,6 +39,7 @@ const UserContext = createContext<AuthContextType | null>(null);
 export const AuthContextProvider = ({ children }: PropsWithChildren) => {
   const [user, setUser] = useState<User | null>(null);
   const [currentStudentNumber, setCurrentStudentNumber] = useState<string>("");
+  const [isTeacher, setIsTeacher] = useState<boolean>(false);
 
   const createUser = async (
     email: string,
@@ -70,6 +73,25 @@ export const AuthContextProvider = ({ children }: PropsWithChildren) => {
     return signOut(auth);
   };
 
+
+  useEffect(() => {
+    if(!user) {
+      return;
+    }
+    async function checkTeacher () {
+      if (user) {
+        const idTokenResult = await user.getIdTokenResult(true);
+        if (idTokenResult.claims.teacher) {
+          setIsTeacher(true);
+          console.log("User is a teacher.");
+        } else {
+          setIsTeacher(false);
+        }
+      }
+    }
+    checkTeacher();
+  }, [user])
+
   console.log(user);
 
   useEffect(() => {
@@ -90,6 +112,7 @@ export const AuthContextProvider = ({ children }: PropsWithChildren) => {
         currentStudentNumber,
         setCurrentStudentNumber,
         createUser,
+        isTeacher,
       }}
     >
       {children}
