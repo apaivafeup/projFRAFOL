@@ -1,14 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { CoverageCard } from "@components/CoverageCard";
 import { useCurrentProject } from "@context/currentProject";
 import { Defects4GuiApiService } from "@services/Defects4GuiApi";
-import CodeMirror from "@uiw/react-codemirror";
-import { abyss } from "@uiw/codemirror-themes-all";
 
-import { basicSetup } from "codemirror";
-import { ButtonLoader } from "@components/ButtonLoader";
-import CurrentProjectHeader from "@components/CurrentProjectHeader";
 import { useSnackbar } from "@context/snackbar";
+import MutationCoverageView from "./MutationCoverage.view";
 
 const COMPILATION_SUCCESS = "Compilation succeeded.";
 
@@ -29,7 +24,7 @@ export const MutationCoverage: React.FC = () => {
     setIsCurrentProjectFirstMutationComplete,
     setJumpToLineNumberOnClassUnderMutation,
   } = useCurrentProject();
-  const { showSnackbar, hideSnackbar } = useSnackbar();
+  const { showSnackbar } = useSnackbar();
 
   const apiService = useRef(new Defects4GuiApiService()).current;
 
@@ -85,7 +80,6 @@ export const MutationCoverage: React.FC = () => {
 
     const performFirstMutation = async () => {
       if (!currentProject) return;
-      setCompilationMessage("");
       showSnackbar(
         "Please wait while we setup the project's mutants",
         "success",
@@ -101,9 +95,8 @@ export const MutationCoverage: React.FC = () => {
           ),
         );
         setIsCurrentProjectFirstMutationComplete(true);
-      } catch (error) {
-        setCompilationMessage(error.message);
-        hideSnackbar();
+      } catch {
+        showSnackbar("First mutation analysis already complete", "success");
       } finally {
         setIsMutating(false);
       }
@@ -114,53 +107,14 @@ export const MutationCoverage: React.FC = () => {
   }, [isCurrentProjectFirstMutationComplete, isMutating]);
 
   return (
-    <>
-      <CurrentProjectHeader />
-      <div className=" grid md:grid-cols-3 gap-4 mt-4">
-        <CoverageCard
-          title="Code Coverage"
-          coverage={Number(currentProject?.metricData[4])}
-          ratio={`${currentProject?.metricData[1]}/${currentProject?.metricData[0]}`}
-        />
-        <CoverageCard
-          title="Condition Coverage"
-          coverage={Number(currentProject?.metricData[5])}
-          ratio={`${currentProject?.metricData[3]}/${currentProject?.metricData[2]}`}
-        />
-
-        <CoverageCard
-          title="Mutation"
-          coverage={Number(currentProject?.mutationSummaryData[3])}
-          ratio={`${currentProject?.mutationSummaryData[1]}/${currentProject?.mutationSummaryData[0]} \n Live: ${currentProject?.mutationSummaryData[2]}`}
-        />
-      </div>
-      <div className="mt-4 gap-2 flex flex-col">
-        <div className="flex flex-row gap-2">
-          <button
-            className={`mt-2 ${isMutateButtonDisabled ? "bg-gray-200" : "bg-blue-500"} hover:${isMutateButtonDisabled ? "bg-gray-300" : "bg-blue-700"} text-white font-bold py-2 px-4 rounded`}
-            onClick={handleMutate}
-            disabled={isMutateButtonDisabled}
-            title={`${isMutateButtonDisabled ? "Please, compile student code first" : ""}`}
-          >
-            {isMutating ? <ButtonLoader /> : "Mutate"}
-          </button>
-          <button
-            className="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            onClick={handleCompile}
-          >
-            {isCompiling ? <ButtonLoader /> : "Compile"}
-          </button>
-        </div>
-        {compilationMessage && (
-          <CodeMirror
-            value={compilationMessage}
-            height="120"
-            extensions={[abyss, basicSetup]}
-            basicSetup={{ lineNumbers: true }}
-            editable={false}
-          />
-        )}
-      </div>
-    </>
+    <MutationCoverageView
+      compilationMessage={compilationMessage}
+      isCompiling={isCompiling}
+      isMutating={isMutating}
+      isMutateButtonDisabled={isMutateButtonDisabled}
+      currentProject={currentProject}
+      handleMutate={handleMutate}
+      handleCompile={handleCompile}
+    />
   );
 };

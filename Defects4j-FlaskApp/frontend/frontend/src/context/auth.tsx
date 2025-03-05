@@ -73,12 +73,11 @@ export const AuthContextProvider = ({ children }: PropsWithChildren) => {
     return signOut(auth);
   };
 
-
   useEffect(() => {
-    if(!user) {
+    if (!user) {
       return;
     }
-    async function checkTeacher () {
+    async function checkTeacher() {
       if (user) {
         const idTokenResult = await user.getIdTokenResult(true);
         if (idTokenResult.claims.teacher) {
@@ -90,7 +89,7 @@ export const AuthContextProvider = ({ children }: PropsWithChildren) => {
       }
     }
     checkTeacher();
-  }, [user])
+  }, [user]);
 
   console.log(user);
 

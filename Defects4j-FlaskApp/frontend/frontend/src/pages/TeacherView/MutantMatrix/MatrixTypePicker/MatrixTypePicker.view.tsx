@@ -13,7 +13,10 @@ function MatrixTypePickerView({
 }: MatrixTypePickerViewProps) {
   return (
     <div className="flex flex-row gap-2 items-center text-black">
-      <label className="text-xl font-semibold" htmlFor="">
+      <label
+        className="text-xl font-semibold lg:min-w-auto min-w-30"
+        htmlFor=""
+      >
         Matrix Type:
       </label>
       <SelectSearch

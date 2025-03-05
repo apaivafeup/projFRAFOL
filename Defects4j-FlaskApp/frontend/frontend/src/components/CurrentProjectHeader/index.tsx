@@ -1,17 +1,10 @@
 import { useCurrentProject } from "../../context";
+import CurrentProjectHeaderView from "./CurrentProjectHeader.view";
 
 function CurrentProjectHeader() {
   const { currentProject } = useCurrentProject();
-  return (
-    <div className="flex flex-row gap-4 text-black">
-      <label className="text-xl font-semibold" htmlFor="">
-        Working Project: {currentProject?.name}
-      </label>
-      <label className="text-xl font-semibold" htmlFor="">
-        Mutation Tool: {currentProject?.mutationTool}
-      </label>
-    </div>
-  );
+
+  return <CurrentProjectHeaderView currentProject={currentProject} />;
 }
 
 export default CurrentProjectHeader;

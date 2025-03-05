@@ -10,15 +10,15 @@ function MutantMatrixView() {
   >("mutant");
 
   return (
-    <div className="flex flex-col h-screen w-full p-1 gap-1">
-      <div className="flex flex-row gap-2">
+    <div className="flex flex-col  p-1 gap-1">
+      <div className=" grid grid-cols-1 lg:flex lg:flex-row gap-2">
         <ProjectPicker />
         <MatrixTypePicker
           currentMatrixType={currentMatrixType}
           setCurrentMatrixType={setCurrentMatrixType}
         />
       </div>
-      <div className="flex flex-col w-full h-full items-center justify-center">
+      <div className="grid grid-cols-1 h-full mt-4">
         {currentMatrixType === "mutant" ? (
           <MutantKillMap />
         ) : (

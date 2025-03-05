@@ -1,6 +1,7 @@
 import { Route, useNavbar } from "@context/navbar";
 import React, { useCallback } from "react";
 import { useNavigate } from "react-router";
+import NavItemView from "./NavItem.view";
 
 interface NavItemProps {
   title: string;
@@ -18,22 +19,13 @@ function NavItem({ title, icon, route }: NavItemProps) {
   }, [route, setCurrentRoute, navigate]);
 
   return (
-    <button
-      style={{ borderRadius: 6 }}
-      className={`p-1 rounded-2xl font-semibold hover:bg-blue-200 items-start flex ${
-        currentRoute === route ? "bg-blue-200" : ""
-      }`}
-      onClick={handleClick}
-    >
-      <div
-        className={` hover:text-blue-500 flex items-center ${
-          currentRoute === route ? "text-blue-600" : ""
-        }`}
-      >
-        {icon}
-        {title}
-      </div>
-    </button>
+    <NavItemView
+      title={title}
+      icon={icon}
+      route={route}
+      currentRoute={currentRoute}
+      handleClick={handleClick}
+    />
   );
 }
 

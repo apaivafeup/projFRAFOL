@@ -1,50 +1,43 @@
 import React, { useCallback, useEffect } from "react";
 import ScreenHero from "../../components/ScreenHero/ScreenHero.view";
 import { faChalkboardTeacher } from "@fortawesome/free-solid-svg-icons";
-import { ButtonLoader } from "../../components/ButtonLoader";
 import { useAuth } from "../../context/auth";
-import { redirect, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import { useSnackbar } from "@context/snackbar";
 import Button from "@components/Button";
 
 function TeacherView() {
   const [isLoading, setIsLoading] = React.useState(false);
-  const [error, setError] = React.useState("");
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
 
   const { signIn, user, isTeacher, logout } = useAuth();
   const navigate = useNavigate();
-  const {showSnackbar} = useSnackbar();
+  const { showSnackbar } = useSnackbar();
 
   const handleLogin = useCallback(
-    async (event) => {
+    async (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
-      setError("");
       try {
-        console.log("Logging in");
         setIsLoading(true);
         await signIn(username, password);
+      } finally {
         setIsLoading(false);
-      } catch (error: unknown) {
-        setIsLoading(false);
-        setError(error.message);
       }
     },
     [username, password, signIn],
   );
 
   useEffect(() => {
-    if(!user) {
+    if (!user) {
       return;
     }
-  
-    if(isTeacher) {
+
+    if (isTeacher) {
       navigate("/teacher/dashboard");
-      return
+      return;
     }
-    showSnackbar("You are not a teacher :)", "error");
-  }, [isTeacher, logout, navigate, showSnackbar, user])
+  }, [isTeacher, logout, navigate, showSnackbar, user]);
   return (
     <div className="flex flex-col items-center w-full justify-center h-screen">
       <ScreenHero
@@ -52,7 +45,7 @@ function TeacherView() {
         title="Hello Teacher"
         description="Please login to manage information about your class"
       />
-      <form onSubmit={handleLogin} className="gap-2">
+      <form onSubmit={handleLogin} className="gap-2 items-center">
         <div className="flex flex-row items-center gap-2">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -65,12 +58,12 @@ function TeacherView() {
           </svg>
           <input
             type="text"
-            placeholder="Username"
+            placeholder="Student Email"
             value={username}
             onChange={(e) => {
               setUsername(e.target.value);
             }}
-            className="border-1 border-gray-200 p-2 rounded-lg"
+            className="border-1 border-gray-200 hover:border-blue-500 p-2.5 text-lg w-80 rounded-xl custom-input"
           />
         </div>
         <div className="flex flex-row items-center gap-2 mt-2">
@@ -91,18 +84,18 @@ function TeacherView() {
             value={password}
             placeholder="Password"
             onChange={(e) => setPassword(e.target.value)}
-            className="border-1 border-gray-200 p-2 rounded-lg"
+            className="border-1 border-gray-200 hover:border-blue-500 p-2.5 text-lg w-80 rounded-xl custom-input"
           />
         </div>
-        <div className="mt-4 items-center">
-      <Button
+        <div className="mt-4 items-center justify-center flex flex-col">
+          <Button
             title={"Login"}
             loading={isLoading}
             onClick={() => {}}
-            type={"submit"}></Button>
-          </div>
+            type={"submit"}
+          ></Button>
+        </div>
       </form>
-
     </div>
   );
 }

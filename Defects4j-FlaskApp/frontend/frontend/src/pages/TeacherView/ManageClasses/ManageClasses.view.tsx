@@ -1,24 +1,27 @@
 import SelectSearch from "@components/SelectSearch";
-import { useTeacher } from "@context/teacher";
 import Card from "@components/Card";
 import PendingStudents from "./components/PendingStudents";
 import CurrentStudents from "./components/CurrentStudents";
 import AddClassModal from "./components/AddClassModal";
+import { StudentSubmission } from "@services/Firebase";
 
-function ManageClasses() {
-  const {
-    allClasses,
-    setCurrentClassName,
-    currentClassName,
-    currentClassAdmissions,
-    currentProjectSubmissions,
-    currentClassStudents,
-  } = useTeacher();
+interface ManageClassesViewProps {
+  currentClassName: string;
+  setCurrentClassName: (className: string) => void;
+  classes: { name: string; value: string }[];
+  currentClassStudents: string[];
+  currentProjectSubmissions: StudentSubmission[] | null;
+  currentClassAdmissions: string[];
+}
 
-  const classes = allClasses.map((className) => {
-    return { name: className, value: className };
-  });
-
+function ManageClassesView({
+  currentClassName,
+  setCurrentClassName,
+  classes,
+  currentClassStudents,
+  currentProjectSubmissions,
+  currentClassAdmissions,
+}: ManageClassesViewProps) {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-row gap-2 items-center text-black">
@@ -53,4 +56,4 @@ function ManageClasses() {
   );
 }
 
-export default ManageClasses;
+export default ManageClassesView;

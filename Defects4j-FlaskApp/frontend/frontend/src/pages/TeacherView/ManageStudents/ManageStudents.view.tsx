@@ -1,15 +1,15 @@
-import ProjectSubmissionsView from "./ProjectSubmissions/ProjectSubmissions.view";
 import ProjectPicker from "../ProjectPicker";
+import ProjectSubmissions from "./ProjectSubmissions";
 
-function ManageStudents() {
+function ManageStudentsView() {
   return (
     <div className="flex flex-col p-1">
       <ProjectPicker />
       <div className="mt-2 pb-4">
-        <ProjectSubmissionsView />
+        <ProjectSubmissions />
       </div>
     </div>
   );
 }
 
-export default ManageStudents;
+export default ManageStudentsView;

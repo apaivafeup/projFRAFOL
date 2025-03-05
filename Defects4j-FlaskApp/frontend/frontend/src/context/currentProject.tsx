@@ -12,7 +12,7 @@ import { MutationTools, ProjectType } from "../utils";
 type TestName = string;
 type MutantId = string;
 type MutantsKilledByTest = MutantId[];
-interface Project {
+export interface Project {
   name: ProjectType;
   mutationTool: MutationTools;
   mutantTableHeaders: string[];

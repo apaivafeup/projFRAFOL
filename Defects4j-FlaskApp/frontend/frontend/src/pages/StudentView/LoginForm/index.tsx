@@ -1,22 +1,21 @@
-import React, { useCallback } from 'react'
-import LoginFormView from './LoginForm.view'
-import { useAuth } from '@context/auth'
-import { useSnackbar } from '@context/snackbar'
-import { useNavigate } from 'react-router'
+import React, { useCallback } from "react";
+import LoginFormView from "./LoginForm.view";
+import { useAuth } from "@context/auth";
+import { useSnackbar } from "@context/snackbar";
+import { useNavigate } from "react-router";
 
 interface LoginFormProps {
-    setIsLoginSelected: (isLoginSelected: boolean) => void
+  setIsLoginSelected: (isLoginSelected: boolean) => void;
 }
 
-function LoginForm( { setIsLoginSelected }: LoginFormProps ) {
-    const [email, setEmail] = React.useState('')
-    const [password, setPassword] = React.useState('')	
-    const [isLoading, setIsLoading] = React.useState(false)
+function LoginForm({ setIsLoginSelected }: LoginFormProps) {
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [isLoading, setIsLoading] = React.useState(false);
 
-    const { signIn } = useAuth()
-    const { showSnackbar } = useSnackbar()
-    const  navigate  = useNavigate()
-
+  const { signIn } = useAuth();
+  const { showSnackbar } = useSnackbar();
+  const navigate = useNavigate();
 
   const handleLogin = useCallback(
     async (event: { preventDefault: () => void }) => {
@@ -44,17 +43,17 @@ function LoginForm( { setIsLoginSelected }: LoginFormProps ) {
     },
     [email, navigate, password, showSnackbar, signIn],
   );
-    return (
-    <LoginFormView 
-        email={email}
-        setEmail={setEmail}
-        password={password}
-        setPassword={setPassword}
-        onDontHaveAccountClick={() => setIsLoginSelected(false)}
-        handleSubmit={handleLogin}
-        isLoading={isLoading}
+  return (
+    <LoginFormView
+      email={email}
+      setEmail={setEmail}
+      password={password}
+      setPassword={setPassword}
+      onDontHaveAccountClick={() => setIsLoginSelected(false)}
+      handleSubmit={handleLogin}
+      isLoading={isLoading}
     />
-  )
+  );
 }
 
-export default LoginForm
+export default LoginForm;

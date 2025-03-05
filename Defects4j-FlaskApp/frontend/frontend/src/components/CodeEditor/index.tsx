@@ -5,9 +5,7 @@ import React, {
   useRef,
   useState,
 } from "react";
-import CodeMirror, { ReactCodeMirrorRef } from "@uiw/react-codemirror";
-import { java } from "@codemirror/lang-java";
-import { basicSetup } from "codemirror";
+import { ReactCodeMirrorRef } from "@uiw/react-codemirror";
 import {
   EditorView,
   Decoration,
@@ -16,6 +14,7 @@ import {
 } from "@codemirror/view";
 import { RangeSetBuilder } from "@codemirror/state";
 import { useCurrentProject } from "../../context";
+import CodeEditorView from "./CodeEditor.view";
 
 interface CodeEditorProps {
   content?: string;
@@ -123,32 +122,15 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
   );
 
   return (
-    <div className="flex flex-col max-w-full flex-grow min-h-0 overflow-hidden">
-      <CodeMirror
-        ref={editorRef}
-        value={code}
-        height="738px"
-        extensions={[basicSetup, java(), coverageHighlightPlugin]}
-        onChange={setCode}
-        basicSetup={{ lineNumbers: true }}
-        editable={editable || false}
-      />
-      {coverageData && (
-        <div className="mt-1 items-center flex font-semibold">
-          <input
-            type="checkbox"
-            checked={removeColorHighlight}
-            onChange={() => setRemoveColorHighlight(!removeColorHighlight)}
-            className="w-4 h-4 text-gray-100 bg-gray-100 border-gray-300 rounded-sm"
-          />
-          <label
-            htmlFor="default-checkbox"
-            className="ms-2 text-sm font-medium text-gray-900"
-          >
-            Remove color highlight
-          </label>
-        </div>
-      )}
-    </div>
+    <CodeEditorView
+      code={code}
+      setCode={setCode}
+      editable={editable || false}
+      coverageData={coverageData}
+      removeColorHighlight={removeColorHighlight}
+      setRemoveColorHighlight={setRemoveColorHighlight}
+      editorRef={editorRef}
+      coverageHighlightPlugin={coverageHighlightPlugin}
+    />
   );
 };

@@ -1,15 +1,11 @@
-import { Circles } from "react-loader-spinner";
+import ButtonLoaderView from "./ButtonLoader.view";
 
-export const ButtonLoader = () => {
-  return (
-    <Circles
-      height="24"
-      width="36"
-      color="#ffffff"
-      ariaLabel="circles-loading"
-      wrapperStyle={{}}
-      wrapperClass="items-center text-center justify-center"
-      visible={true}
-    />
-  );
+interface ButtonLoaderProps {
+  height?: number;
+  width?: number;
+  color?: string;
+}
+
+export const ButtonLoader = ({ width, height, color }: ButtonLoaderProps) => {
+  return <ButtonLoaderView width={width} height={height} color={color} />;
 };
