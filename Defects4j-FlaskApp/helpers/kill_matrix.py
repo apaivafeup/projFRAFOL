@@ -31,7 +31,7 @@ public class PlaceholderTest extends TestCase {
         class_template += f"\n    {var}"
     
     for method_body in helper_methods: 
-        class_template += f"\n\n    {method_body }"
+        class_template += f"\n\n    {method_body.get('method_body')}"
 
     # Add lifecycle and helper methods
     class_template += f"""
@@ -52,47 +52,49 @@ def generate_kill_matrix(project: Project, tool: Tool) -> Dict[str, List[str]]:
     with open(fp.student_test_file_path, 'r') as file:
         java_code = file.read()
 
-    test_method_bodies, non_tests = tsj.extract_test_methods(java_code)  # Ensure correct unpacking
+    test_method_bodies, non_tests = tsj.extract_test_methods(java_code)  
     lifecycle_methods = tsj.extract_lifecycle_methods(java_code)
     helper_methods = tsj.extract_helper_methods(java_code, test_method_bodies)
-    print(f"Extracted Test Methods: {test_method_bodies}")  # Debugging output
-    print(f"Extracted Lifecycle Methods: {lifecycle_methods}")  # Debugging output
-    print(f"Extracted Helper Methods: {helper_methods}")  # Debugging output
+    print(f"Extracted Test Methods: {test_method_bodies}") 
+    print(f"Extracted Lifecycle Methods: {lifecycle_methods}")  
+    print(f"Extracted Helper Methods: {helper_methods}")
 
     all_imports = re.findall(r'import .*;', java_code)
     all_imports = '\n'.join(all_imports)
 
     variables = tsj.extract_global_variables(java_code)
-    print(f"Extracted Global Variables: {variables}")  # Debugging output
+    print(f"Extracted Global Variables: {variables}")  
 
     package = re.search(r'package\s+([\w\.]+);', java_code)
     if package:
         all_imports = f"package {package.group(1)};\n" + all_imports
 
     kill_matrix: Dict[str, List[str]] = {}
-    all_killed_mutants = set()  # Use a set to store unique mutant IDs
+    all_killed_mutants = set()  
 
     for test_method in test_method_bodies:
         test_method_code = test_method['method_body']
         test_method_name = test_method['method_name']
         #test_throws_clause = test_method['throws_clause']
-        print(f"Running kill matrix analysis for {test_method_name}")
+        print(f"Running kill matrix analysis for {test_method_name}: \n\n")
 
-        # Create the placeholder test class with the proper method name
         placeholder_test = create_placeholder_class(test_method_code, variables, lifecycle_methods=lifecycle_methods, 
                                                     helper_methods=non_tests)
-        print(f"Placeholder Test Class: {placeholder_test}")  # Debugging output
 
         with open(fp.placeholder_test_file_path, 'w') as file:
             file.write(all_imports  + '\n' + placeholder_test)
             print(all_imports + '\n' + placeholder_test)
 
         project.clear_project_tools_output()
-        d4jh.run_kill_matrix_analysis(project.name_version, tool.name)
+        try:
+            d4jh.run_kill_matrix_analysis(project.name_version, tool.name)
 
-        mutants_killed_by_this_test: List[str] = tool.get_mutants_killed_by_test(project.name_version)
-        kill_matrix[test_method_name] = mutants_killed_by_this_test
-        all_killed_mutants.update(mutants_killed_by_this_test)  # Add to the set
+            mutants_killed_by_this_test: List[str] = tool.get_mutants_killed_by_test(project.name_version)
+            kill_matrix[test_method_name] = mutants_killed_by_this_test
+            all_killed_mutants.update(mutants_killed_by_this_test) 
+        except Exception as e:
+            print(f"Error in running kill matrix analysis: {e}")
+            kill_matrix[test_method_name] = []
 
     return kill_matrix, list(all_killed_mutants)
 

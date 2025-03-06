@@ -11,56 +11,56 @@ def parse_java_code(java_code):
     tree = parser.parse(bytes(java_code, "utf8"))
     return tree
 
-import re
 
 def extract_test_methods(java_code):
-    method_pattern = re.compile(
-        r'^\s*(?:public|private|protected|static|final|synchronized|abstract|native|strictfp)?\s*'  # Modifiers (optional)
-        r'void\s+(test\w*)\s*'  # Method name (must start with "test")
-        r'\([^)]*\)\s*'  # Parameters (non-greedy match)
-        r'(throws\s+[^{]+)?'  # Optional throws clause (non-greedy)
-        r'\{',  # Opening brace
+    """
+    Extracts test methods (methods starting with 'test') and non-test methods (excluding setup/teardown).
+    """
+
+    # Pattern to match test methods (public void testSomething())
+    test_method_pattern = re.compile(
+        r'^\s*(?:public|protected)\s+void\s+(test\w+)\s*\([^)]*\)\s*(throws\s+[^{]+)?\s*\{',
         re.MULTILINE
     )
 
+    # Pattern to match all void methods (excluding test methods)
     non_test_method_pattern = re.compile(
-        r'^\s*(?:public|private|protected|static|final|synchronized|abstract|native|strictfp)?\s*'  # Modifiers (optional)
-        # Method name (must not start with "test")
-        r'void\s+(?!test\w*)\s*'  # Method name (must start with "test")
-        r'\([^)]*\)\s*'  # Parameters (non-greedy match)
-        r'(throws\s+[^{]+)?'  # Optional throws clause (non-greedy)
-        r'\{',  # Opening brace
+        r'^\s*(?:public|private|protected|static|final|synchronized|abstract|native|strictfp)?\s*'
+        r'void\s+([a-zA-Z_]\w*)\s*\([^)]*\)\s*(throws\s+[^{]+)?\s*\{',
         re.MULTILINE
     )
 
-    methods = []
-    non_tests = []
-    
-    for match in method_pattern.finditer(java_code):
+    test_methods = []
+    non_test_methods = []
+
+    for match in test_method_pattern.finditer(java_code):
+        method_name = match.group(1)
         start_idx = match.start()
-        method_name = match.group(1)  # Extract method name
         method_body = extract_full_body(java_code, start_idx)
 
-        methods.append({
+        test_methods.append({
             'method_name': method_name,
             'method_body': method_body.strip()
         })
 
     for match in non_test_method_pattern.finditer(java_code):
-        start_idx = match.start()
         method_name = match.group(1)
-        method_body = extract_full_body(java_code, start_idx)
+        if method_name not in {"setUp", "tearDown"} and not method_name.startswith("test"):  # Exclude setup/teardown
+            start_idx = match.start()
+            method_body = extract_full_body(java_code, start_idx)
 
-        non_tests.append({
-            'method_name': method_name,
-            'method_body': method_body.strip()
-        })
+            non_test_methods.append({
+                'method_name': method_name,
+                'method_body': method_body.strip()
+            })
 
-    return methods, non_tests
+    return test_methods, non_test_methods
 
 
 def extract_full_body(java_code, start_index):
-    """Extracts the method body ensuring balanced curly braces"""
+    """
+    Extracts the full method body while ensuring balanced curly braces.
+    """
     brace_count = 0
     inside_string = False
     escape_next = False
@@ -69,7 +69,7 @@ def extract_full_body(java_code, start_index):
         char = java_code[i]
 
         if char == '"' and not escape_next:
-            inside_string = not inside_string  # Toggle inside string state
+            inside_string = not inside_string  # Toggle string state
 
         escape_next = (char == '\\' and not escape_next)
 
@@ -81,8 +81,7 @@ def extract_full_body(java_code, start_index):
                 if brace_count == 0:
                     return java_code[start_index:i + 1]  # Return full method body
 
-    return java_code[start_index:]  # Fallback in case of unbalanced braces
-
+    return java_code[start_index:]  # Fallback if braces are unbalanced
 # Example Java test case
 #def extract_test_methods(java_code):
     tree = parse_java_code(java_code)

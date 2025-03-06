@@ -21,7 +21,7 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 
 je.wipe_checked_out_projects()
 
-avaliable_projects = ['Cli', 'Gson', 'Lang', 'Jsoup', 'Math', 'Compress', 'Mockito', 'Csv']
+avaliable_projects = ['Cli', 'Gson', 'Lang', 'Jsoup', 'Math', 'Compress']
 
 def file_data(path):
     data = str()
@@ -161,7 +161,7 @@ def add_junit5_to_pom(project):
 
 @app.route('/get_avaliable_projects', methods=['GET'])
 def get_avaliable_projects():
-    return jsonify({'projects_to_import' : avaliable_projects, 'projects_to_open': pm.get_projects_fromjson()}), 200  
+    return jsonify({'projects_to_import' : avaliable_projects, 'projects_to_open': pm.get_opened_projects()}), 200  
 
 @app.route('/project_versions', methods=['post'])
 def project_versions():
@@ -184,9 +184,9 @@ def import_project():
     #add_junit5_to_pom(projectWithVersion + "f")
     #add_junit5_to_maven_build(projectWithVersion + "f")
 
-    je.save_checked_out_project(project_name, version)
+    
                
-    return jsonify({'projects_to_open': pm.get_projects_fromjson() }), 200
+    return jsonify({'projects_to_open': pm.get_opened_projects() }), 200
 
 @app.route('/open_project', methods=['POST'])
 def load_project():
@@ -252,15 +252,6 @@ def generate_mutants():
     
     sheet_data, table_header, killed_list = project.analyze_mutants(with_student_tests)
     summary_data = project.get_project_mutation_summary()
-
-    # Check if this is the first analysis by verifying if the mutants_ids_to_be_killed list is empty
-    # is_first_analysis = je.read_checked_out_project(project_name, version).get("tools", {}).get(tool, {}).get("mutants_ids_to_be_killed", []) is []
-    # if is_first_analysis:
-    #     mutant_ids = []
-    #     # Collect all mutant IDs from the sheet data
-    #     for item in sheet_data:
-    #         mutant_id = item[0]
-    #         mutant_ids.append(mutant_id)
 
     return jsonify({
         'table_header': table_header,

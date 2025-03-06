@@ -35,6 +35,16 @@ def read_file_if_exists(file_path):
         print(f"File {full_path} does not exist")
         return None
     
+def get_root_folders():
+    """
+    Returns the list of folders in the root/ directory that do not start with a dot.
+
+    :return: The list of folders in the root/ directory that do not start with a dot
+    """
+    full_path = '/root/'
+
+    return [f for f in os.listdir(full_path) if os.path.isdir(os.path.join(full_path, f)) and not f.startswith('.')]
+    
 
 def comment_java_file(file_path, line_number_to_comment):
     try:
