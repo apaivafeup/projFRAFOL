@@ -196,6 +196,23 @@ def extract_helper_methods(java_code, test_methods):
     return used_helpers
 
 
+def extract_constructors(java_code):
+    pattern = r'public\s+\w+\s*\([^)]*\)\s*\{[^{}]*\}'
+    matches = re.findall(pattern, java_code, re.DOTALL)
+    return matches
+
+def extract_test_suite(java_code):
+    pattern = r'public\s+static\s+Test\s+suite\s*\(\)\s*\{[^{}]*\}'
+    match = re.search(pattern, java_code, re.DOTALL)
+    return match.group(0) if match else None
+
+
+def extract_static_variables(java_code):
+    # Capture both static variable declaration and static block (initialization)
+    pattern = r'private\s+static\s+final\s+long\s+\w+\s*;\s*static\s*\{[\s\S]*?\}'
+    matches = re.findall(pattern, java_code, re.DOTALL)
+    return matches
+
 
 def extract_global_variables(java_code):
     tree = parse_java_code(java_code)
@@ -221,7 +238,6 @@ def extract_global_variables(java_code):
                 for grandchild in child.children:
                     if grandchild.type in ('type_identifier', 'primitive_type', 'array_type', 'generic_type'):
                         var_type = java_code[grandchild.start_byte:grandchild.end_byte]
-                        print(var_type)  # Debugging: Check extracted type
 
 
                 # Extract all variable declarators in the same line
@@ -240,9 +256,6 @@ def extract_global_variables(java_code):
                                 global_vars.append(f"{modifiers_str} {var_type} {var_name} = {var_value};")
                             else:
                                 global_vars.append(f"{modifiers_str} {var_type} {var_name};")
-                        else:
-                            # ⚠️ Skip incomplete variables
-                            print(f"Skipped incomplete variable declaration: {var_type} {var_name}")
             elif child.type == 'enum_declaration':  
                 enum_name = None
                 modifiers = []

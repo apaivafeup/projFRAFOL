@@ -11,24 +11,30 @@ def extract_specific_test(java_code, test_name):
     match = re.search(pattern, java_code, re.DOTALL)
     return match.group(0) if match else None
 
-def create_placeholder_class(test_method_code, variables, lifecycle_methods=None, helper_methods=None):
+def create_placeholder_class(test_method_code, variables, lifecycle_methods=None, helper_methods=None, static_variables=None):
     """Creates a valid test class without unnecessary wrappers."""
 
     set_up_method = lifecycle_methods.get('setUp', '') if lifecycle_methods else ''
     tear_down_method = lifecycle_methods.get('tearDown', '') if lifecycle_methods else ''    
     formatted_lifecycle_methods = ''
     if set_up_method:
-        formatted_lifecycle_methods += f"@Override\nprotected void setUp() throws Exception {set_up_method}\n"
+        formatted_lifecycle_methods += f"\nprotected void setUp() throws Exception {set_up_method}\n"
     if tear_down_method:
-        formatted_lifecycle_methods += f"@Override\nprotected void tearDown() throws Exception {tear_down_method}\n"
+        formatted_lifecycle_methods += f"\nprotected void tearDown() throws Exception {tear_down_method}\n"
+
+
 
     class_template = """
 public class PlaceholderTest extends TestCase {
 """
 
-    # Add global variables
     for var in variables:
         class_template += f"\n    {var}"
+    
+    for var in static_variables:
+        class_template += f"\n    {var}"
+
+
     
     for method_body in helper_methods: 
         class_template += f"\n\n    {method_body.get('method_body')}"
@@ -38,8 +44,10 @@ public class PlaceholderTest extends TestCase {
 
     {formatted_lifecycle_methods}
 
-    
+
     {test_method_code}  // Insert test method directly
+
+    
 }}
 """
 
@@ -54,16 +62,17 @@ def generate_kill_matrix(project: Project, tool: Tool) -> Dict[str, List[str]]:
 
     test_method_bodies, non_tests = tsj.extract_test_methods(java_code)  
     lifecycle_methods = tsj.extract_lifecycle_methods(java_code)
-    helper_methods = tsj.extract_helper_methods(java_code, test_method_bodies)
-    print(f"Extracted Test Methods: {test_method_bodies}") 
-    print(f"Extracted Lifecycle Methods: {lifecycle_methods}")  
-    print(f"Extracted Helper Methods: {helper_methods}")
+    static_variables = tsj.extract_static_variables(java_code)
+    #print(f"Extracted Static Variables: {static_variables}")
+    #print(f"Extracted Test Methods: {test_method_bodies}") 
+    #print(f"Extracted Lifecycle Methods: {lifecycle_methods}")  
+    #print(f"Extracted Helper Methods: {helper_methods}")
 
     all_imports = re.findall(r'import .*;', java_code)
     all_imports = '\n'.join(all_imports)
 
     variables = tsj.extract_global_variables(java_code)
-    print(f"Extracted Global Variables: {variables}")  
+    #print(f"Extracted Global Variables: {variables}")  
 
     package = re.search(r'package\s+([\w\.]+);', java_code)
     if package:
@@ -76,14 +85,14 @@ def generate_kill_matrix(project: Project, tool: Tool) -> Dict[str, List[str]]:
         test_method_code = test_method['method_body']
         test_method_name = test_method['method_name']
         #test_throws_clause = test_method['throws_clause']
-        print(f"Running kill matrix analysis for {test_method_name}: \n\n")
+        #print(f"Running kill matrix analysis for {test_method_name}: \n\n")
 
         placeholder_test = create_placeholder_class(test_method_code, variables, lifecycle_methods=lifecycle_methods, 
-                                                    helper_methods=non_tests)
+                                                    helper_methods=non_tests, static_variables=static_variables)
 
         with open(fp.placeholder_test_file_path, 'w') as file:
             file.write(all_imports  + '\n' + placeholder_test)
-            print(all_imports + '\n' + placeholder_test)
+            #print(all_imports + '\n' + placeholder_test)
 
         project.clear_project_tools_output()
         try:
@@ -94,7 +103,9 @@ def generate_kill_matrix(project: Project, tool: Tool) -> Dict[str, List[str]]:
             all_killed_mutants.update(mutants_killed_by_this_test) 
         except Exception as e:
             print(f"Error in running kill matrix analysis: {e}")
-            kill_matrix[test_method_name] = []
+            print(f"Skipping test method {test_method_name}")
+            print(all_imports  + '\n' + placeholder_test)
+            kill_matrix[test_method_name] = ["error"]
 
     return kill_matrix, list(all_killed_mutants)
 
