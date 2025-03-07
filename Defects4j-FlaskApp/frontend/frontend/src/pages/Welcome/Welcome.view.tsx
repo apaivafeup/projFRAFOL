@@ -1,5 +1,3 @@
-import { MutationTools } from "../../utils";
-
 import Button from "@components/Button";
 import SelectProjectDropdown from "./components/SelectProjectDropdown";
 import { ChangeEvent } from "react";
@@ -23,6 +21,7 @@ interface WelcomeViewProps {
   handleNewOpenProject: (project: ChangeEvent<HTMLSelectElement>) => void;
   handleNewMutationTool: (tool: ChangeEvent<HTMLSelectElement>) => void;
   handleOpenProject: () => void;
+  mutationToolsValues: string[];
 }
 
 function WelcomeView({
@@ -41,6 +40,7 @@ function WelcomeView({
   handleNewOpenProject,
   handleNewMutationTool,
   handleOpenProject,
+  mutationToolsValues,
 }: WelcomeViewProps) {
   return (
     <div className="flex flex-col flex-1 h-screen gap- 2 items-center pt-24">
@@ -74,12 +74,14 @@ function WelcomeView({
             value={selectedVersion}
           />
         </div>
-        <Button
-          title="Import"
-          onClick={handleImportProject}
-          disabled={openProjectLoading}
-          loading={importProjectLoading}
-        />
+        <div className="mt-2">
+          <Button
+            title="Import"
+            onClick={handleImportProject}
+            disabled={openProjectLoading}
+            loading={importProjectLoading}
+          />
+        </div>
         <div className="text-xl font-semibold text-black mt-4">
           Open Project:
         </div>
@@ -93,19 +95,20 @@ function WelcomeView({
           />
           <SelectProjectDropdown
             label="Mutation Tool"
-            values={Object.values(MutationTools).map((tool) =>
-              tool.toUpperCase(),
-            )}
+            values={mutationToolsValues}
             onChange={handleNewMutationTool}
             value={selectedMutationTool.toUpperCase()}
           />
         </div>
+        <div className="mt-2">
+
         <Button
           title="Open"
           onClick={handleOpenProject}
           disabled={importProjectLoading}
           loading={openProjectLoading}
         />
+        </div>
       </div>
     </div>
   );

@@ -7,6 +7,7 @@ export enum ProjectType {
   LANG = "Lang",
   GSON = "Gson",
   CLI = "Cli",
+  COMPRESS_44 = "Compress-44",
 }
 
 export enum MutationTools {
