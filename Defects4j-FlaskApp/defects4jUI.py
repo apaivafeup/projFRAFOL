@@ -19,8 +19,6 @@ app.secret_key = "e60OMnoWrQaHjlz"
 CORS(app, resources={r"/*": {"origins": "http://localhost:5173"}}, supports_credentials=True)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
-je.wipe_checked_out_projects()
-
 avaliable_projects = ['Cli', 'Gson', 'Lang', 'Jsoup', 'Math', 'Compress']
 
 def file_data(path):

@@ -5,35 +5,6 @@ import logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-def save_checked_out_project(project, version):
-    try:
-        with open("checked_out_projects.json", 'r') as imported_projects:
-            data = json.load(imported_projects)
-            if not isinstance(data, list):
-                data = []
-    except (FileNotFoundError, json.JSONDecodeError):
-        data = []
-
-    project_name_version = project + "-" + version
-    project_exists = False
-
-    for item in data:
-        if item.get(project_name_version):
-            project_exists = True
-            break
-
-    if not project_exists:
-        data.append({
-            project_name_version: True
-        })
-
-    with open("checked_out_projects.json", 'w') as json_file:
-        json.dump(data, json_file, indent=4, separators=(',', ': '))
-
-def wipe_checked_out_projects():
-    with open("checked_out_projects.json", 'w') as json_file:
-        json.dump([], json_file, indent=4, separators=(',', ': '))
-
 def save_imported_project_in_json(project, metric_data=None, coverage_data=None, total_mutants=None):
     try:
         with open("data.json", 'r') as imported_projects:
