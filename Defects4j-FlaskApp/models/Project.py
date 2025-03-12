@@ -11,12 +11,17 @@ from helpers import defects4j_helper as d4jh
 from helpers import project_coverage_helper as pch
 from helpers import csv_helper, file_paths
 
-# Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-MUTATION_DEFAULT_SCORES = ['0','0','0',0]
+MUTATION_DEFAULT_SCORES = ['0','0','0','0']
 
+"""
+This class represents a project in the analysis.
+It is responsible for handling the project's data and running the analysis.
+
+To create a new project, use projects/factory.py and inherit from this class.
+"""
 class Project:
     def __init__(self, name, version, tool):
         self.name = name
@@ -45,6 +50,15 @@ class Project:
         return os.path.exists("/root/" + self.name_version + "-" + self.tool.name + ".csv")
     
     def get_project_data(self):
+        """
+        Project data is cached after the first analysis.
+        If the project data is cached, it is returned.
+        Otherwise, the project data is fetched from the tools and the coverage data is generated.
+
+        Returns:
+            metric_data: The data related to the project's condition and line coverage.
+            coverage_data: The color highlighting of the project's coverage.
+        """
         project = self.name_version
         cached_project_data = je.read_imported_project_from_json(project)
         if cached_project_data and cached_project_data["metric_data"]:
@@ -79,6 +93,10 @@ class Project:
 
     
     def clear_project_tools_output(self):
+        """
+        Clears the project's tools output directory.
+        The directory is located at /root/{project}f/tools_output/{tool}/
+        """
     
         path = '/root/' + self.name_version + 'f/tools_output/' + self.tool.name + '/*'
         files = glob.glob(path)
@@ -154,8 +172,10 @@ class Project:
         self.clear_project_tools_output()
         d4jh.set_analysis_parameters(self.name_version, self.tool.name, False)
     
-    
     def get_devsuite_path(self):
+        '''
+        Fetches the dev suite tests related with the given project
+        '''
         project = self.name_version
         path = "/root/" + project + "f"
 
@@ -181,6 +201,9 @@ class Project:
         return path + "/" + src + "/" + bin + ".java"
 
     def get_class_path(self):
+        '''
+        Fetches the class path of the project's buggy class
+        '''
         project = self.name_version
         path = "/root/" + project + "f"
         if not os.path.isdir(path):

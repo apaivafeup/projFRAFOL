@@ -1,6 +1,9 @@
 import os
 
-
+'''
+This is the abstract class for the tools that will be used in the analysis.
+To create a new tool, implement it inside tools/factory.py and inherit from this class.
+'''
 class Tool:
 
     def __init__(self, name):

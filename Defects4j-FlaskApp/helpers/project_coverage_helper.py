@@ -1,6 +1,14 @@
 from lxml import etree as ET
 
 def get_line_coverage_color_highlighting(project):
+    """
+    Get the color highlighting of the project's coverage.
+    The coverage is read from the coverage.xml file in the root directory.
+
+    :param project: the name of the project to get the coverage data for
+
+    :return: a dictionary containing the red, yellow, and green lines of the project's coverage
+    """
     coverage_file_path = ("/root/" + project + "f/coverage.xml")
     tree = ET.parse(coverage_file_path)
     root = tree.getroot()
