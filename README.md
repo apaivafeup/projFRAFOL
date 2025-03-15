@@ -140,13 +140,13 @@ Once Docker has been installed and running, open a terminal in the project direc
 
 Open a browser page, using the url http://localhost:8000/.
 
-![FRAFOL Landing Page](./Defects4j-FlaskApp/assets/images/landing.jpg "Landing Page")
+![FRAFOL Landing Page](./assets/images/landing.jpg "Landing Page")
 
 From here, select a project from the dropdown menu, indicating the buggy version for the specific project. Clicking import will add the selection to the list of projects that are currently being tested.
 
 Select a project from the list of imported projects and the mutation tool to be applied. Click open to initiate the chosen project and begin writing test cases.
 
-![Project Working Page](./Defects4j-FlaskApp/assets/images/working.jpg "Project Page")
+![Project Working Page](./assets/images/working.jpg "Project Page")
 
 The following page includes an editor for writing test cases and a dashboard of information regarding mutation testing.
 
@@ -194,7 +194,7 @@ Open a browser page, using the url http://localhost:5173/.
 
 ### Select Project Tab
 
-![FRAFOL Landing Page](./Defects4j-FlaskApp/assets/images/2.0/landing.png "Landing Page")
+![FRAFOL Landing Page](./assets/images/2.0/landing.png "Landing Page")
 
 From here, select a project from the dropdown menu, indicating the buggy version for the specific project. Clicking import will add the selection to the list of projects that are currently being tested.
 
@@ -202,7 +202,7 @@ Select a project from the list of imported projects and the mutation tool to be 
 
 ### Analyzer
 
-![Project Working Page](./Defects4j-FlaskApp/assets/images/2.0/analyzer.png "Project Page")
+![Project Working Page](./assets/images/2.0/analyzer.png "Project Page")
 
 This page includes an editor for writing test cases and a dashboard of information regarding mutation testing.
 
@@ -216,7 +216,7 @@ For the navigation tabs inside this page, check this [reference information](#na
 
 ### Kill Matrix
 
-![Kill Matrix](./Defects4j-FlaskApp/assets/images/2.0/killMatrix.png "Kill Matrix Page")
+![Kill Matrix](./assets/images/2.0/killMatrix.png "Kill Matrix Page")
 
 A kill matrix contains information about which mutants were killed by each one of the written tests. It works by running each of the test units against all code mutants, therefore it should take some time.
 
