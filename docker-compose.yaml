@@ -12,7 +12,7 @@ services:
       - "8000:8000"
     restart: always
     volumes:
-      - ./Defects4j-FlaskApp:/app
+      - ./api:/app
     environment:
       - FLASK_ENV=development
     depends_on:
