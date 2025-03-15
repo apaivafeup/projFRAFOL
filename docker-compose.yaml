@@ -6,7 +6,7 @@ services:
   backend:
     image: defects4j_backend
     build:
-      context: ./Defects4j-FlaskApp # Flask backend folder
+      context: ./api # Flask backend folder
       dockerfile: Dockerfile
     ports:
       - "8000:8000"
@@ -21,13 +21,13 @@ services:
   frontend:
     image: defects4j_frontend
     build:
-      context: ./Defects4j-FlaskApp/frontend/frontend # client folder
+      context: ./client # client folder
       dockerfile: Dockerfile
     ports:
       - "5173:5173"
     restart: always
     volumes:
-      - ./Defects4j-FlaskApp/frontend/frontend:/app
+      - ./client:/app
       - /app/node_modules
     stdin_open: true
     tty: true

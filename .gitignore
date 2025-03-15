@@ -1,12 +1,15 @@
 
 /defects4j
 
-/Defects4j-FlaskApp/tmp
-/Defects4j-FlaskApp/tree-sitter-java
-/Defects4j-FlaskApp/data.json
-/Defects4j-FlaskApp/build
-/Defects4j-FlaskApp/__pycache__
-/Defects4j-FlaskApp/**/*.pyc
+/api/tmp
+/api/tree-sitter-java
+/api/data.json
+/api/build
+/api/__pycache__
+/api/**/*.pyc
+
+/client/package-lock.json
+/client/node_modules
 
 **/*.pyc
 **/__pycache__/
