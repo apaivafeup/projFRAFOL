@@ -101,13 +101,12 @@ function WelcomeView({
           />
         </div>
         <div className="mt-2">
-
-        <Button
-          title="Open"
-          onClick={handleOpenProject}
-          disabled={importProjectLoading}
-          loading={openProjectLoading}
-        />
+          <Button
+            title="Open"
+            onClick={handleOpenProject}
+            disabled={importProjectLoading}
+            loading={openProjectLoading}
+          />
         </div>
       </div>
     </div>

@@ -34,11 +34,7 @@ const classProjectAlreadyExists = async (
 
 const createClassProject = async (className: string, projectName: string) => {
   try {
-    const docRef = await setDoc(
-      doc(db, "classes", className, "projects", projectName),
-      {},
-    );
-    console.log("Document written with ID: ", docRef);
+    await setDoc(doc(db, "classes", className, "projects", projectName), {});
   } catch (e) {
     throw new Error("Error" + e);
   }
@@ -54,7 +50,7 @@ export const addSubmission = async (submission: StudentSubmission) => {
     ) {
       await createClassProject(submission.className, submission.projectName);
     }
-    const docRef = await setDoc(
+    await setDoc(
       doc(
         db,
         "classes",
@@ -70,7 +66,6 @@ export const addSubmission = async (submission: StudentSubmission) => {
         code: submission.code,
       },
     );
-    console.log("Document written with ID: ", docRef);
   } catch (e) {
     throw new Error("Error" + e);
   }
@@ -78,8 +73,7 @@ export const addSubmission = async (submission: StudentSubmission) => {
 
 export const addClass = async (className: string) => {
   try {
-    const docRef = await setDoc(doc(db, "classes", className), {});
-    console.log("Document written with ID: ", docRef);
+    await setDoc(doc(db, "classes", className), {});
   } catch (e) {
     throw new Error("Error adding document: " + e);
   }
@@ -206,7 +200,6 @@ export const isAdmittedStudent = async (
   className: string,
 ) => {
   try {
-    console.log("fds", studentNumber, className);
     const docRef = await getDoc(
       doc(db, "classes", className, "admitted", studentNumber),
     );

@@ -55,16 +55,20 @@ export const MutationCoverage: React.FC = () => {
           studentCode,
         ),
       );
-      showSnackbar(
-        "Mutants have been generated successfully",
-        "success",
-      );
+      showSnackbar("Mutants have been generated successfully", "success");
     } catch (error) {
       setCompilationMessage((error as Error).message);
     } finally {
       setIsMutating(false);
     }
-  }, [apiService, currentProject, savePartialProject, setIsMutating, showSnackbar, studentCode]);
+  }, [
+    apiService,
+    currentProject,
+    savePartialProject,
+    setIsMutating,
+    showSnackbar,
+    studentCode,
+  ]);
 
   useEffect(() => {
     setJumpToLineNumberOnClassUnderMutation(0);
@@ -92,10 +96,7 @@ export const MutationCoverage: React.FC = () => {
             false,
           ),
         );
-        showSnackbar(
-          "Mutants have been generated successfully",
-          "success",
-        );
+        showSnackbar("Mutants have been generated successfully", "success");
         setIsCurrentProjectFirstMutationComplete(true);
       } catch {
         showSnackbar("First mutation analysis already complete", "success");

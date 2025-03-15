@@ -1,7 +1,13 @@
 import { useCurrentProject } from "@context/currentProject";
 import { Defects4GuiApiService } from "@services/Defects4GuiApi";
 import { ProjectType, MutationTools } from "@utils/index";
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { useNavigate } from "react-router";
 import WelcomeView from "./Welcome.view";
 
@@ -42,15 +48,15 @@ function Welcome() {
   );
 
   const mutationToolsValues = useMemo(() => {
-    return Object.values(MutationTools).map((tool) => {
-      if(selectedOpenProject === ProjectType.COMPRESS_44) {
-        return tool === MutationTools.MAJOR ? undefined : tool.toUpperCase()
-      } 
-      return tool.toUpperCase()
-    }
-    ).filter((tool) => tool !== undefined);
+    return Object.values(MutationTools)
+      .map((tool) => {
+        if (selectedOpenProject === ProjectType.COMPRESS_44) {
+          return tool === MutationTools.MAJOR ? undefined : tool.toUpperCase();
+        }
+        return tool.toUpperCase();
+      })
+      .filter((tool) => tool !== undefined);
   }, [selectedOpenProject]);
-
 
   const handleNewImportProject = useCallback(
     async (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -78,7 +84,6 @@ function Welcome() {
 
   const handleNewMutationTool = useCallback(
     async (e: React.ChangeEvent<HTMLSelectElement>) => {
-      console.log(e.target.value);
       const mutationTool = e.target.value.toLowerCase() as MutationTools;
       setSelectedMutationTool(mutationTool);
     },

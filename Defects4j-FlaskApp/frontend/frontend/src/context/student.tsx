@@ -30,9 +30,8 @@ export const StudentProvider: React.FC<{ children: ReactNode }> = ({
 
   useEffect(() => {
     const fetchIsAdmitted = async () => {
-      if (!user) return false;
+      if (!user || !user.displayName || !user.photoURL) return false;
       const studentClass = user.photoURL;
-      console.log("studentClass", studentClass);
       return await isAdmittedStudent(user.displayName, studentClass);
     };
     fetchIsAdmitted().then((result) => setIsAdmitted(result));

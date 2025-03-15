@@ -47,22 +47,18 @@ function KillMatrixView({
     <div className="flex flex-col p-12 items-center w-full justify-center h-screen">
       <div className="grid grid-cols-1 gap-2 p-4 w-full">
         <div className="absolute top-4 right-4">
-          <Button title="?" onClick={() => setOpenHelp(true)}>
-        </Button>
+          <Button title="?" onClick={() => setOpenHelp(true)}></Button>
         </div>
         <div className="flex flex-col items-center w-full justify-center">
-        <div className="flex flex-row w-full justify-center text-gray-500 items-center  gap-1">
-          <FontAwesomeIcon icon={faCross} className="text-blue-500" />
-          <div>= Mutant Killed</div>
-        </div>
-        <div className="flex flex-row w-full justify-center text-gray-500 items-center  gap-1">
-         <div className="w-4 h-4 bg-red-300">
-         </div>
-         = Test Failed
-        </div>
+          <div className="flex flex-row w-full justify-center text-gray-500 items-center  gap-1">
+            <FontAwesomeIcon icon={faCross} className="text-blue-500" />
+            <div>= Mutant Killed</div>
+          </div>
+          <div className="flex flex-row w-full justify-center text-gray-500 items-center  gap-1">
+            <div className="w-4 h-4 bg-red-300"></div>= Test Failed
+          </div>
         </div>
         <div className="overflow-auto flex w-full flex-col rounded-md">
-
           <table className="border-collapse rounded-xl">
             <thead>
               <tr>
@@ -80,7 +76,9 @@ function KillMatrixView({
               {Object.entries(currentProject?.killMatrix ?? {}).map(
                 ([testMethod, killedMutants], index) => (
                   <tr className="" key={index}>
-                    <td className={`${killedMutants.includes("error") ? 'bg-red-300' : ''} flex flex-col border  px-2 py-2`}>
+                    <td
+                      className={`${killedMutants.includes("error") ? "bg-red-300" : ""} flex flex-col border  px-2 py-2`}
+                    >
                       {testMethod}
                     </td>
                     {currentProject?.killMatrixHeaders?.map((header, index) => (
@@ -92,8 +90,7 @@ function KillMatrixView({
                               className="text-blue-500"
                             />
                           </div>
-                        ) :
-                        (
+                        ) : (
                           ""
                         )}
                       </td>
@@ -105,13 +102,13 @@ function KillMatrixView({
           </table>
         </div>
         <div className="w-full flex items-center justify-center">
-        <Button
-          title="Generate Kill Matrix Again"
-          onClick={handleGenerateKillMatrix}
-          loading={isGeneratingKillMatrix}
-        />
+          <Button
+            title="Generate Kill Matrix Again"
+            onClick={handleGenerateKillMatrix}
+            loading={isGeneratingKillMatrix}
+          />
         </div>
-      <HelpModalView open={openHelp} setOpen={setOpenHelp} />
+        <HelpModalView open={openHelp} setOpen={setOpenHelp} />
       </div>
     </div>
   );

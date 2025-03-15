@@ -69,9 +69,7 @@ export const TeacherProvider: React.FC<{ children: ReactNode }> = ({
 
   const getCurrentClassProjects = useCallback(async () => {
     if (!currentClassName) return;
-    console.log("Fetching projects for class", currentClassName);
     const projects = await getClassProjects(currentClassName);
-    console.log("Projects for class", currentClassName, projects);
     setCurrentClassProjects(projects);
   }, [currentClassName]);
 

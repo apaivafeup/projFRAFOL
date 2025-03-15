@@ -13,7 +13,6 @@ function SelectProjectDropdownView({
   label,
   width,
 }: SelectProjectDropdownViewProps) {
-  console.log(value);
   return (
     <div className="mt-2 flex flex-col">
       <label className="text-black">{label}</label>

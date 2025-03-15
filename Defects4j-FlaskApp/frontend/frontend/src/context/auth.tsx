@@ -59,8 +59,6 @@ export const AuthContextProvider = ({ children }: PropsWithChildren) => {
         displayName: studentNumber,
         photoURL: className, //store class name in photoURL, useful to have only one source of truth to fetch student metadata
       });
-
-      console.log("User created and student number saved in displayName!");
     } catch (error) {
       console.error("Error creating user or saving student number", error);
     }
@@ -82,7 +80,6 @@ export const AuthContextProvider = ({ children }: PropsWithChildren) => {
         const idTokenResult = await user.getIdTokenResult(true);
         if (idTokenResult.claims.teacher) {
           setIsTeacher(true);
-          console.log("User is a teacher.");
         } else {
           setIsTeacher(false);
         }
@@ -90,8 +87,6 @@ export const AuthContextProvider = ({ children }: PropsWithChildren) => {
     }
     checkTeacher();
   }, [user]);
-
-  console.log(user);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {

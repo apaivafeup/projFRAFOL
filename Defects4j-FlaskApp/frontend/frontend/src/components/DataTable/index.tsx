@@ -62,8 +62,6 @@ const DataTableComponent = ({}: DataTableComponentProps) => {
     )
       return;
 
-    console.log("Updating DataTable with project:", currentProject);
-
     const filteredData = excludeKilledMutants
       ? currentProject.mutantSheetData.filter(
           (row) => !currentProject.killedMutants.includes(row[0]),
@@ -71,7 +69,6 @@ const DataTableComponent = ({}: DataTableComponentProps) => {
       : currentProject.mutantSheetData;
 
     if (!filteredData.length) {
-      console.warn("No data available for DataTable.");
       return;
     }
 

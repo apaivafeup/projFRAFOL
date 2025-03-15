@@ -2,12 +2,11 @@ import { CodeEditor } from "@components/CodeEditor";
 import { Modal } from "@mui/material";
 
 interface HelpModalViewProps {
-    open: boolean;
-    setOpen: (value: boolean) => void;
-    }
+  open: boolean;
+  setOpen: (value: boolean) => void;
+}
 
-function HelpModalView( {open, setOpen}: HelpModalViewProps) {
-
+function HelpModalView({ open, setOpen }: HelpModalViewProps) {
   const goodExampleCode = `
 public class StudentTest extends TestCase {
 
@@ -107,12 +106,23 @@ public class StudentTest extends TestCase {
       className="flex items-center justify-center"
     >
       <div className="flex flex-col  gap-2 bg-white p-4 rounded-2xl max-h-screen overflow-auto w-[80%]">
-        <h2><b className="text-blue-500">Kill Matrix</b></h2>
+        <h2>
+          <b className="text-blue-500">Kill Matrix</b>
+        </h2>
+        <h3>
+            <b>⚠️ All your tests must start with "test" for the matrix to function properly! ⚠️</b>
+        </h3>
         <label htmlFor="">
-          This is an experimental feature. It works by parsing every single one of your test code separately, and running it against all mutants, to see what mutants are killed by it.
-          The more complex and holistic your code is, the harder it is for the regex and AST parse to extract your test code directly. To ensure the best kill matrix experience, aim to write the 
-          test methods as simple as possible, with few outer method calls, and preferably none helper static method or variables. This doesn't mean the student's code is not clean, it just means its much
-          easier for the syntax parsing to be done so the student can know which mutants are killed by each one of their tests.
+          This is an experimental feature. It works by parsing every single one
+          of your test code separately, and running it against all mutants, to
+          see what mutants are killed by it. The more complex and holistic your
+          code is, the harder it is for the regex and AST parse to extract your
+          test code directly. To ensure the best kill matrix experience, aim to
+          write the test methods as simple as possible, with few outer method
+          calls, and preferably none helper static method or variables. This
+          doesn't mean the student's code is not clean, it just means its much
+          easier for the syntax parsing to be done so the student can know which
+          mutants are killed by each one of their tests.
         </label>
         <div className="grid md:grid-cols-2 w-full gap-4">
           <div className="flex flex-col gap-2 w-full">

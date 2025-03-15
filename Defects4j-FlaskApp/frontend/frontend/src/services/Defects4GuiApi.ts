@@ -43,8 +43,6 @@ export class Defects4GuiApiService {
         },
       );
 
-      console.log("Response:", response);
-
       const data = response.data;
       return data;
     } catch (error) {
@@ -71,7 +69,6 @@ export class Defects4GuiApiService {
   }
 
   async openProject(project: string, mutationTool: string) {
-    console.log("Opening project:", project, mutationTool);
     try {
       const response = await api.post<OpenProjectResponse>(
         Endpoints.OPEN_PROJECT,
@@ -173,8 +170,6 @@ export class Defects4GuiApiService {
       });
 
       const { kill_matrix, all_killed_mutants } = response.data;
-
-      console.log("Kill matrix:", all_killed_mutants);
 
       return {
         killMatrix: kill_matrix,

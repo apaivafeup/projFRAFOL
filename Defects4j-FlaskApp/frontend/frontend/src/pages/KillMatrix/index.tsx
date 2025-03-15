@@ -14,7 +14,7 @@ export const KillMatrix = () => {
     setIsGeneratingKillMatrix,
   } = useCurrentProject();
   const apiService = useRef(new Defects4GuiApiService()).current;
-  const {showSnackbar} = useSnackbar();
+  const { showSnackbar } = useSnackbar();
 
   const killMatrixIsNotGenerated = useMemo(() => {
     return (
@@ -34,10 +34,13 @@ export const KillMatrix = () => {
           currentProject.mutationTool,
           studentCode,
         );
-      if(!killMatrix || !killMatrixHeaders || !killMatrixHeaders.length) {
-          showSnackbar("Error Generating Kill Matrix, check Docker Logs", "error");
-          return;
-        }
+      if (!killMatrix || !killMatrixHeaders || !killMatrixHeaders.length) {
+        showSnackbar(
+          "Error Generating Kill Matrix, check Docker Logs",
+          "error",
+        );
+        return;
+      }
       savePartialProject({ killMatrix, killMatrixHeaders });
       showSnackbar("Kill Matrix Generated Successfully", "success");
     } catch {
@@ -45,7 +48,15 @@ export const KillMatrix = () => {
     } finally {
       setIsGeneratingKillMatrix(false);
     }
-  }, [apiService, currentProject, isGeneratingKillMatrix, savePartialProject, setIsGeneratingKillMatrix, showSnackbar, studentCode]);
+  }, [
+    apiService,
+    currentProject,
+    isGeneratingKillMatrix,
+    savePartialProject,
+    setIsGeneratingKillMatrix,
+    showSnackbar,
+    studentCode,
+  ]);
 
   return (
     <KillMatrixView
