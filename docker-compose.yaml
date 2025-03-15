@@ -1,14 +1,33 @@
-version: "3"
+version: "3.8"
 
 name: defects4j
 
 services:
-  frontend:
-    image: defects4j
+  backend:
+    image: defects4j_backend
     build:
-      context:  ./Defects4j-FlaskApp
+      context: ./Defects4j-FlaskApp # Flask backend folder
       dockerfile: Dockerfile
     ports:
       - "8000:8000"
     restart: always
+    volumes:
+      - ./Defects4j-FlaskApp:/app
+    environment:
+      - FLASK_ENV=development
+    depends_on:
+      - frontend
 
+  frontend:
+    image: defects4j_frontend
+    build:
+      context: ./Defects4j-FlaskApp/frontend/frontend # client folder
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
+    restart: always
+    volumes:
+      - ./Defects4j-FlaskApp/frontend/frontend:/app
+      - /app/node_modules
+    stdin_open: true
+    tty: true

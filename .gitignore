@@ -3,3 +3,13 @@
 
 /Defects4j-FlaskApp/tmp
 /Defects4j-FlaskApp/tree-sitter-java
+/Defects4j-FlaskApp/data.json
+/Defects4j-FlaskApp/build
+/Defects4j-FlaskApp/__pycache__
+/Defects4j-FlaskApp/**/*.pyc
+
+**/*.pyc
+**/__pycache__/
+**/*.fcache
+
+.vscode
