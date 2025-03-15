@@ -15,6 +15,13 @@ def parse_java_code(java_code):
 def extract_test_methods(java_code):
     """
     Extracts test methods (methods starting with 'test') and non-test methods (excluding setup/teardown).
+    
+    Args:
+        java_code: Java code as a string
+
+    Returns:
+        test_methods: List of dictionaries containing the method name and body of each test method
+        non_test_methods: List of dictionaries containing the method name and body of each non-test method.
     """
 
     # Pattern to match test methods (public void testSomething())
@@ -82,57 +89,6 @@ def extract_full_body(java_code, start_index):
                     return java_code[start_index:i + 1]  # Return full method body
 
     return java_code[start_index:]  # Fallback if braces are unbalanced
-# Example Java test case
-#def extract_test_methods(java_code):
-    tree = parse_java_code(java_code)
-    root_node = tree.root_node
-
-    test_methods = []
-
-    def is_test_annotation(node):
-        return (node.type == 'marker_annotation' and 
-                java_code[node.start_byte:node.end_byte] == '@Test')
-
-    def walk(node):
-        for child in node.children:
-            if child.type == 'method_declaration':
-                method_name = None
-                has_test_annotation = False
-                method_body = None
-                throws_clause = ''
-
-                # Check for @Test annotation
-                parent = child.parent
-                prev_sibling = None
-                for sibling in parent.children:
-                    if sibling == child:
-                        break
-                    prev_sibling = sibling
-                
-                if prev_sibling and is_test_annotation(prev_sibling):
-                    has_test_annotation = True
-
-                # Extract method name and throws clause
-                for grandchild in child.children:
-                    if grandchild.type == 'identifier':
-                        method_name = java_code[grandchild.start_byte:grandchild.end_byte]
-                    elif grandchild.type == 'throws':
-                        throws_clause = java_code[grandchild.start_byte:grandchild.end_byte]
-                    elif grandchild.type == 'block':
-                        method_body = java_code[grandchild.start_byte:grandchild.end_byte]
-                        print(method_body)
-
-                if method_name and (has_test_annotation or method_name.startswith('test')):
-                    test_methods.append({
-                        'method_name': method_name,
-                        'method_body': method_body,
-                        'throws_clause': throws_clause
-                    })
-
-            walk(child)
-
-    walk(root_node)
-    return test_methods
 
 
 def extract_lifecycle_methods(java_code):
@@ -168,32 +124,6 @@ def extract_lifecycle_methods(java_code):
 
     walk(root_node)
     return lifecycle_methods
-
-def extract_helper_methods(java_code, test_methods):
-    tree = parse_java_code(java_code)
-    root_node = tree.root_node
-
-    helper_methods = {}
-
-    def get_method_name(node, code):
-        name_node = node.child_by_field_name('name')
-        return code[name_node.start_byte:name_node.end_byte] if name_node else ''
-
-    # 📌 Step 1: Extract all methods in the class
-    for node in root_node.children:
-        if node.type == 'method_declaration':
-            method_name = get_method_name(node, java_code)
-            method_body = java_code[node.start_byte:node.end_byte]
-            helper_methods[method_name] = method_body
-
-    # 📌 Step 2: Find helper methods used in test methods
-    used_helpers = {}
-    for test_method in test_methods:
-        for helper_name in helper_methods.keys():
-            if helper_name in test_method['method_body']:  # Simple substring match
-                used_helpers[helper_name] = helper_methods[helper_name]
-
-    return used_helpers
 
 
 def extract_constructors(java_code):
@@ -249,7 +179,7 @@ def extract_global_variables(java_code):
                         var_name = java_code[var_name_node.start_byte:var_name_node.end_byte] if var_name_node else ''
                         var_value = java_code[var_value_node.start_byte:var_value_node.end_byte] if var_value_node else ''
 
-                        # ✅ Only add if type and name are present
+                        
                         if var_type and var_name:
                             modifiers_str = ' '.join(modifiers)
                             if var_value:

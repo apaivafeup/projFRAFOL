@@ -57,6 +57,20 @@ public class PlaceholderTest extends TestCase {
 
 
 def generate_kill_matrix(project: Project, tool: Tool) -> Dict[str, List[str]]:
+    """Generates the kill matrix for the given project and tool.
+
+    - Extracts all the test methods from the student's test file.
+    - Creates a placeholder test class with one extracted test method at a time.
+    - Runs the mutation analysis for each class created.
+    - Iterares over each test and returns the kill matrix.
+
+    Args:
+        project (Project): The project to analyze.
+        tool (Tool): The tool to use for the analysis.
+
+    Returns:
+        Dict[str, List[str]]: A dictionary where the keys are the test method names and the values are the list of mutants killed by that test. It also returns a list of all killed mutants.
+    """
     with open(fp.student_test_file_path, 'r') as file:
         java_code = file.read()
 
