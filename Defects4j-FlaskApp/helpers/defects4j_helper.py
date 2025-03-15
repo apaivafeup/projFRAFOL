@@ -63,7 +63,7 @@ def run_analyzer(project, tool, student_tests_arg, dev_tests_arg):
     try:
         subprocess.check_output(cmd, shell=True, text=True, stderr=subprocess.STDOUT)
     except subprocess.CalledProcessError as e:
-        logger.info(f"MAJOR: Error Major Mutant Run AnalyZER 2: { e.output }")
+        logger.info(f"Error Mutant Run Analyzer: { e.output }")
 
 def checkout_project(project_name, version):
     '''
