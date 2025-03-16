@@ -1,20 +1,20 @@
-# Use a lightweight Node.js image
-FROM node:18
+FROM node:18-alpine AS build
 
-# Set the working directory
 WORKDIR /app
 
-# Copy package.json and package-lock.json
 COPY package*.json ./
 
-# Install dependencies
 RUN npm install
 
-# Copy the rest of the frontend code
+RUN npm i -g serve
+
 COPY . .
 
-# Expose the frontend development port (Vite or React)
-EXPOSE 5173
+RUN npm run build
 
-# Start the React app
-CMD ["npm", "run", "preview"]
+RUN ls -la /app/dist
+
+EXPOSE 4173
+
+CMD [ "serve", "-s", "dist", "-l", "4173" ]
+

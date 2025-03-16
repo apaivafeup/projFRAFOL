@@ -190,7 +190,7 @@ This page includes a table detailing information about each live mutant present 
 
 ## Frafol 2.0
 
-Open a browser page, using the url http://localhost:5173/.
+Open a browser page, using the url http://localhost:4173/.
 
 ### Select Project Tab
 

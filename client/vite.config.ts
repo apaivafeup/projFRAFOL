@@ -19,5 +19,11 @@ export default defineConfig({
   server: {
     host: "0.0.0.0", // Allow connections from any network interface
     port: 5173,
+    strictPort: true,
   },
+  preview: {
+    host: true,
+    port: 4173,
+    strictPort: true,
+   },
 });

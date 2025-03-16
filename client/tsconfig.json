@@ -8,13 +8,18 @@
       "@context/*": ["context/*"],
       "@services/*": ["services/*"],
       "@pages/*": ["pages/*"]
-    }
+    },
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "jsx": "react-jsx",
   },
-  "include": ["src"],
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src"],
   "exclude": ["node_modules", "dist"],
   "files": [],
   "references": [
     { "path": "./tsconfig.app.json" },
     { "path": "./tsconfig.node.json" }
-  ]
+  ],
+  "esModuleInterop": true,
+  "allowImportingTsExtensions": true,
 }
