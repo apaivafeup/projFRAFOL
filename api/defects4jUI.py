@@ -14,7 +14,7 @@ from models.Project import Project
 app = Flask(__name__)
 
 # CORS Configuration
-CORS(app, resources={r"/*": {"origins": "http://localhost:5173"}}, supports_credentials=True)
+CORS(app, resources={r"/*": {"origins": "http://localhost:4173"}}, supports_credentials=True)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
 avaliable_projects = ['Cli', 'Gson', 'Lang', 'Jsoup', 'Math', 'Compress']
