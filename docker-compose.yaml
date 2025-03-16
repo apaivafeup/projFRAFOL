@@ -3,6 +3,21 @@ version: "3.8"
 name: defects4j
 
 services:
+  backend:
+    image: defects4j_backend
+    build:
+      context: ./api # Flask backend folder
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    restart: always
+    volumes:
+      - ./api:/app
+    environment:
+      - FLASK_ENV=development
+    depends_on:
+      - frontend
+
   frontend:
     image: defects4j_frontend
     build:
