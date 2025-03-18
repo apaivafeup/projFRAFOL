@@ -21,13 +21,11 @@ services:
   frontend:
     image: defects4j_frontend
     build:
-      context: ./client # client folder
+      context: ./client  # Client folder
       dockerfile: Dockerfile
     ports:
       - "4173:4173"
     restart: always
-    volumes:
-      - ./client:/app
-      - /app/node_modules
+
     stdin_open: true
     tty: true
