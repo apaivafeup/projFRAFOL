@@ -114,17 +114,18 @@ sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin 
 
 ## FRAFOL Download
 
+### Git Clone
+
+To install Github in your system follow the [link](https://github.com/git-guides/install-git) guidelines.
+
+Clone the project into a directory of your choice using the following command: `git clone --branch FRAFOL2.0 https://github.com/apaivafeup/projFRAFOL.git`
+
 ### Manual Download
 
 To manually download the project use this [link](https://github.com/PedroTav/Defects4jFlaskApp/archive/refs/heads/master.zip).
 
 Extract the project into a directory of your choice.
 
-### Git Download
-
-To install Github in your system follow the [link](https://github.com/git-guides/install-git) guidelines.
-
-Clone the project into a directory of your choice using the following command: `git clone https://github.com/PedroTav/Defects4jFlaskApp.git`
 
 ## FRAFOL Docker Compose
 
