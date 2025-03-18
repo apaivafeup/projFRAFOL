@@ -10,6 +10,7 @@ import React, {
 } from "react";
 import { useNavigate } from "react-router";
 import WelcomeView from "./Welcome.view";
+import { useSnackbar } from "@context/snackbar";
 
 function Welcome() {
   const [importProjects, setImportProjects] = useState<string[]>([]);
@@ -35,6 +36,7 @@ function Welcome() {
   const { openProject, setIsCurrentProjectFirstMutationComplete } =
     useCurrentProject();
   const navigate = useNavigate();
+  const {showSnackbar} = useSnackbar();
 
   const getAvaliableVersionForSelectedProject = useCallback(
     async (project: string) => {
@@ -98,12 +100,13 @@ function Welcome() {
         selectedVersion,
       );
       setOpenProjects(projects_to_open);
+      showSnackbar("Project imported successfully", "success");
     } catch (error) {
-      console.error("Error importing project:", error);
+      showSnackbar("Error importing project: " + error, "error");
     } finally {
       setImportProjectLoading(false);
     }
-  }, [apiService, selectedImportProject, selectedVersion]);
+  }, [apiService, selectedImportProject, selectedVersion, showSnackbar]);
 
   const handleOpenProject = useCallback(async () => {
     setOpenProjectLoading(true);
