@@ -57,7 +57,7 @@ function NavbarView({
           route="kill-matrix"
         />
         <NavItem
-          title="Student"
+          title="Submission"
           icon={<FontAwesomeIcon icon={faUserAlt} className="mr-2" />}
           route="student"
         />
