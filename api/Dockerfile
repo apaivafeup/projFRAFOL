@@ -13,17 +13,17 @@ RUN \
   apt-get update -y && \
   apt-get install software-properties-common -y && \
   apt-get update -y && \
-  apt-get install -y openjdk-8-jdk \
-                git-all \
-                build-essential \
-                subversion \
-                perl \
-                python3-pip \
-                curl \
-                unzip \
-                cpanminus \
-                make \
-                && \
+  apt-get install -y openjdk-11-jdk \
+  git-all \
+  build-essential \
+  subversion \
+  perl \
+  python3-pip \
+  curl \
+  unzip \
+  cpanminus \
+  make \
+  && \
   rm -rf /var/lib/apt/lists/*
 
 # Java version
@@ -31,12 +31,12 @@ ARG TARGETARCH
 
 # Set JAVA_HOME based on the architecture and write it to /etc/environment
 RUN if [ "$TARGETARCH" = "arm64" ]; then \
-        echo "Running on ARM architecture" && \
-        echo "JAVA_HOME=/usr/lib/jvm/java-8-openjdk-arm64" >> /etc/environment; \
-    else \
-        echo "Running on AMD architecture" && \
-        echo "JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64" >> /etc/environment; \
-    fi
+  echo "Running on ARM architecture" && \
+  echo "JAVA_HOME=/usr/lib/jvm/java-11-openjdk-arm64" >> /etc/environment; \
+  else \
+  echo "Running on AMD architecture" && \
+  echo "JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64" >> /etc/environment; \
+  fi
 
 # Use the dot command to source /etc/environment to set the environment variables
 RUN set -a && . /etc/environment && set +a
@@ -50,7 +50,7 @@ RUN echo "JAVA_HOME: $JAVA_HOME"
 
 # ----------- Step 1. Clone defects4j from github --------------
 WORKDIR /
-RUN git clone https://github.com/PedroTav/defects4j.git defects4j
+RUN git clone --branch upgrade-junit-5 --single-branch https://github.com/xavi-999/defects4j-frafol.git defects4j
 
 # ----------- Step 2. Initialize Defects4J ---------------------
 WORKDIR /defects4j

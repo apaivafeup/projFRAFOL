@@ -90,7 +90,17 @@ class PIT(Tool):
                             killing_test_name = "UnknownTest"      
                             
                         line_number = mutation.find('lineNumber').text
-                        block = mutation.find('block').text
+
+                        blocks_element = mutation.find("blocks")  # For PIT 1.9.0
+                        if blocks_element is not None:
+                            block_element = blocks_element.find("block")
+                            if block_element is not None and block_element.text is not None:
+                                block = int(block_element.text)
+                            else:
+                                raise ValueError("Missing or empty <block> tag in XML")
+                        else:
+                            raise ValueError("Missing <blocks> tag in XML")
+                        
                         mutator = mutation.find('mutator').text
 
                         mutants_killed.append({
