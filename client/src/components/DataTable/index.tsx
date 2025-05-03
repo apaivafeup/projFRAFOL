@@ -92,6 +92,9 @@ const DataTableComponent = ({}: DataTableComponentProps) => {
 
       row.forEach((cell) => {
         const cellElement = document.createElement("td");
+        if(!cell) {
+          return
+        }
         cellElement.textContent = cell.toString();
         rowElement.appendChild(cellElement);
       });

@@ -4,6 +4,7 @@ import { Defects4GuiApiService } from "@services/Defects4GuiApi";
 
 import { useSnackbar } from "@context/snackbar";
 import MutationCoverageView from "./MutationCoverage.view";
+import { isTestSuiteEmpty } from "@utils/index";
 
 const COMPILATION_SUCCESS = "Compilation succeeded.";
 
@@ -47,12 +48,17 @@ export const MutationCoverage: React.FC = () => {
     if (!currentProject) return;
     setCompilationMessage("");
     setIsMutating(true);
+
+    const isEmpty = isTestSuiteEmpty(studentCode);
+
     try {
       savePartialProject(
         await apiService.analyzeProjectMutants(
           currentProject.name,
           currentProject.mutationTool,
           studentCode,
+          !isEmpty,
+          isEmpty
         ),
       );
       showSnackbar("Mutants have been generated successfully", "success");

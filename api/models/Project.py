@@ -149,9 +149,8 @@ class Project:
 
         try:
             values = [data["Total mutants count"], data["Killed mutants count"], data["Live mutants count"], round(float(data["Mutation score"])*100,2)]
-        except:
-            values = MUTATION_DEFAULT_SCORES
-        logger.info("Values: %s", values)
+        finally:
+            logger.info("Values: %s", values)
         #values = [total_mutants, killed_mutants, data["Live mutants count"], mutation_score]
 
         return values

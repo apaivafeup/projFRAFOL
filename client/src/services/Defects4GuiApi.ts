@@ -24,7 +24,7 @@ interface OpenProjectResponse {
 }
 
 export class Defects4GuiApiService {
-  public constructor() {}
+  public constructor() { }
 
   async getAvaliableProjects() {
     const response = await api.get<AvaliableProjectsResponse>(
@@ -133,6 +133,7 @@ export class Defects4GuiApiService {
     tool: string,
     studentCode?: string,
     withStudentTests = true,
+    getMutationWithoutStudentSuite = false,
   ) {
     try {
       const response = await api.post(Endpoints.ANALYZE_MUTANTS, {
@@ -140,6 +141,7 @@ export class Defects4GuiApiService {
         tool,
         code: studentCode,
         withStudentTests,
+        getMutationWithoutStudentSuite,
       });
 
       if (response.status === 204) {

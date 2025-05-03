@@ -14,3 +14,7 @@ export enum MutationTools {
   MAJOR = "major",
   PIT = "pit",
 }
+
+export const isTestSuiteEmpty = (testSuite: string) => {
+  return !testSuite.includes("test")
+}
