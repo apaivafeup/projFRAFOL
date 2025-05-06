@@ -44,12 +44,24 @@ export const MutationCoverage: React.FC = () => {
     setCompilationMessage(message);
   }, [apiService, currentProject, setIsMutateButtonDisabled, studentCode]);
 
+  const resetMutationScores = useCallback(() => {
+    if (!currentProject?.snapshot) {
+      return;
+    }
+    savePartialProject(currentProject.snapshot);
+  }, [currentProject, savePartialProject]);
+
   const handleMutate = useCallback(async () => {
     if (!currentProject) return;
     setCompilationMessage("");
     setIsMutating(true);
 
     const isEmpty = isTestSuiteEmpty(studentCode);
+
+    if (isEmpty) {
+      resetMutationScores();
+      return;
+    }
 
     try {
       savePartialProject(
@@ -58,7 +70,7 @@ export const MutationCoverage: React.FC = () => {
           currentProject.mutationTool,
           studentCode,
           !isEmpty,
-          isEmpty
+          isEmpty,
         ),
       );
       showSnackbar("Mutants have been generated successfully", "success");
@@ -70,6 +82,7 @@ export const MutationCoverage: React.FC = () => {
   }, [
     apiService,
     currentProject,
+    resetMutationScores,
     savePartialProject,
     setIsMutating,
     showSnackbar,
@@ -94,14 +107,16 @@ export const MutationCoverage: React.FC = () => {
       );
       setIsMutating(true);
       try {
-        savePartialProject(
-          await apiService.analyzeProjectMutants(
-            currentProject.name,
-            currentProject.mutationTool,
-            studentCode,
-            false,
-          ),
+        const mutantInformation = await apiService.analyzeProjectMutants(
+          currentProject.name,
+          currentProject.mutationTool,
+          studentCode,
+          false,
         );
+        savePartialProject({
+          ...mutantInformation,
+          snapshot: mutantInformation,
+        });
         showSnackbar("Mutants have been generated successfully", "success");
         setIsCurrentProjectFirstMutationComplete(true);
       } catch {

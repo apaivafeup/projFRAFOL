@@ -25,6 +25,7 @@ export interface Project {
   coverageData: Record<"green" | "yellow" | "red", Array<number>>;
   killMatrix: Record<TestName, MutantsKilledByTest>;
   killMatrixHeaders: string[];
+  snapshot?: object;
 }
 
 export interface CurrentProjectContextProps {

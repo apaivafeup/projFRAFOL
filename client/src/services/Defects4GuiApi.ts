@@ -24,7 +24,7 @@ interface OpenProjectResponse {
 }
 
 export class Defects4GuiApiService {
-  public constructor() { }
+  public constructor() {}
 
   async getAvaliableProjects() {
     const response = await api.get<AvaliableProjectsResponse>(

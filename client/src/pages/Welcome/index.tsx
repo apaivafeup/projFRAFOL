@@ -36,7 +36,7 @@ function Welcome() {
   const { openProject, setIsCurrentProjectFirstMutationComplete } =
     useCurrentProject();
   const navigate = useNavigate();
-  const {showSnackbar} = useSnackbar();
+  const { showSnackbar } = useSnackbar();
 
   const getAvaliableVersionForSelectedProject = useCallback(
     async (project: string) => {

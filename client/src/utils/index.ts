@@ -16,5 +16,5 @@ export enum MutationTools {
 }
 
 export const isTestSuiteEmpty = (testSuite: string) => {
-  return !testSuite.includes("test")
-}
+  return !testSuite.includes("test");
+};

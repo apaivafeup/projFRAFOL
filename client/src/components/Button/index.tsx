@@ -5,12 +5,12 @@ interface ButtonProps extends ButtonBaseProps {
   title: string;
   onClick: VoidFunction;
   loading?: boolean;
-  props?: object;
+  isDisabled?: boolean;
 }
 
-function Button({ title, onClick, loading, props }: ButtonProps) {
+function Button({ title, onClick, loading, ...rest }: ButtonProps) {
   return (
-    <ButtonView title={title} onClick={onClick} loading={loading} {...props} />
+    <ButtonView title={title} onClick={onClick} loading={loading} {...rest} />
   );
 }
 
