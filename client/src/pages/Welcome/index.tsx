@@ -52,13 +52,10 @@ function Welcome() {
   const mutationToolsValues = useMemo(() => {
     return Object.values(MutationTools)
       .map((tool) => {
-        if (selectedOpenProject === ProjectType.COMPRESS_44) {
-          return tool === MutationTools.MAJOR ? undefined : tool.toUpperCase();
-        }
         return tool.toUpperCase();
       })
       .filter((tool) => tool !== undefined);
-  }, [selectedOpenProject]);
+  }, []);
 
   const handleNewImportProject = useCallback(
     async (e: React.ChangeEvent<HTMLSelectElement>) => {
