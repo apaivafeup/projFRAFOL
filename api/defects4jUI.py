@@ -92,10 +92,9 @@ def load_project():
 def get_coverage():
     data = request.json
     project = data['project']
-    tool = data['tool']
 
     project_name, version = project.split("-")
-    opened_project : Project = make_project(project_name, version, make_tool(tool))
+    opened_project : Project = make_project(project_name, version)
 
     metric_data, coverage_data = opened_project.get_coverage()
 
