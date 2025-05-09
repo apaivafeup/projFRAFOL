@@ -4,6 +4,7 @@ export const Endpoints = {
   IMPORT_PROJECT: "/import_project",
   OPEN_PROJECT: "/open_project",
   COMPILE_PROJECT: "/compile",
+  GET_COVERAGE: "/get_coverage",
   ANALYZE_MUTANTS: "/analyze_mutants",
   GENERATE_KILL_MATRIX: "/generate_kill_matrix",
 };

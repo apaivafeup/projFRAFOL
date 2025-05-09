@@ -11,6 +11,8 @@ const COMPILATION_SUCCESS = "Compilation succeeded.";
 export const MutationCoverage: React.FC = () => {
   const [compilationMessage, setCompilationMessage] = useState<string>("");
   const [isCompiling, setIsCompiling] = useState<boolean>(false);
+  const [isUpdatingCoverage, setIsUpdatingCoverage] = useState<boolean>(false);
+
   const hasRun = useRef(false);
 
   const {
@@ -43,6 +45,31 @@ export const MutationCoverage: React.FC = () => {
     setIsCompiling(false);
     setCompilationMessage(message);
   }, [apiService, currentProject, setIsMutateButtonDisabled, studentCode]);
+
+  const handleCoverage = useCallback(async () => {
+    if (!currentProject) return;
+
+    setIsUpdatingCoverage(true);
+    try {
+      const coverageData = await apiService.getCoverage(
+        currentProject.name,
+        studentCode,
+      );
+
+      savePartialProject(coverageData);
+      showSnackbar("Project coverage has been updated", "success");
+    } catch (error) {
+      setCompilationMessage((error as Error).message);
+    } finally {
+      setIsUpdatingCoverage(false);
+    }
+  }, [
+    apiService,
+    currentProject,
+    savePartialProject,
+    showSnackbar,
+    studentCode,
+  ]);
 
   const resetMutationScores = useCallback(() => {
     if (!currentProject?.snapshot) {
@@ -136,9 +163,11 @@ export const MutationCoverage: React.FC = () => {
       isCompiling={isCompiling}
       isMutating={isMutating}
       isMutateButtonDisabled={isMutateButtonDisabled}
+      isUpdatingCoverage={isUpdatingCoverage}
       currentProject={currentProject}
       handleMutate={handleMutate}
       handleCompile={handleCompile}
+      handleCoverage={handleCoverage}
     />
   );
 };

@@ -14,7 +14,7 @@ from models.Project import Project
 app = Flask(__name__)
 
 # CORS Configuration
-CORS(app, resources={r"/*": {"origins": "http://localhost:4173"}}, supports_credentials=True)
+CORS(app, resources={r"/*": {"origins": ["http://localhost:4173" ,"http://localhost:5173"]}}, supports_credentials=True)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
 avaliable_projects = ['Cli', 'Gson', 'Lang', 'Jsoup', 'Math', 'Compress']
@@ -85,6 +85,22 @@ def load_project():
         'summary_data': ['0', '0', '0', '0'],
         'test_class': test_class,
         'dev_suite': dev_suite,
+        'coverage_data': coverage_data
+    }), 200
+
+@app.route('/get_coverage', methods=['POST'])
+def get_coverage():
+    data = request.json
+    project = data['project']
+    tool = data['tool']
+
+    project_name, version = project.split("-")
+    opened_project : Project = make_project(project_name, version, make_tool(tool))
+
+    metric_data, coverage_data = opened_project.get_coverage()
+
+    return jsonify({
+        'metric_data': metric_data,
         'coverage_data': coverage_data
     }), 200
 

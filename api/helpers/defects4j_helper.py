@@ -99,5 +99,25 @@ def get_project_coverage(project):
 
     return matches
 
+def set_test_suite_in_d4j_classpath(project):
+    '''
+    Sets the test suite in the defects4j classpath
+
+    :param project: The project to set the test suite in
+
+    :return: the test suite is set in the defects4j classpath
+    '''
+    student_tests = " -t " + fp.student_test_file_path
+    path = '/defects4j/analyzer/analyzer.py'
+    cmd = ("python3 " + path + " set_test_suite $HOME/" + project + "f" + student_tests + " --stdout --stderr -v")
+    #os.system(cmd)
+
+    try:
+        subprocess.check_output(cmd, shell=True, text=True, stderr=subprocess.STDOUT)
+    except subprocess.CalledProcessError as e:
+        logger.info(f"Error Mutant Run Analyzer: { e.output }")
+
+
+
 def get_reports_analyzer_path():
     return '/defects4j/analyzer/reportsanalyzer.py'

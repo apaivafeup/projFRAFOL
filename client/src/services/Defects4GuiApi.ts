@@ -128,6 +128,28 @@ export class Defects4GuiApiService {
     }
   }
 
+  async getCoverage(project: string, code: string) {
+    try {
+      const response = await api.post(Endpoints.GET_COVERAGE, {
+        project,
+        code,
+      });
+
+      const { metric_data, coverage_data } = response.data;
+
+      return {
+        metricData: metric_data,
+        coverageData: coverage_data,
+      };
+    } catch (error) {
+      console.error("Error:", error);
+      return {
+        statusCode: 500,
+        message: "Error coverage student code",
+      };
+    }
+  }
+
   async analyzeProjectMutants(
     project: string,
     tool: string,

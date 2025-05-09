@@ -11,9 +11,11 @@ interface MutationCoverageViewProps {
   isCompiling: boolean;
   isMutating: boolean;
   isMutateButtonDisabled: boolean;
+  isUpdatingCoverage: boolean;
   currentProject: Project | null;
   handleMutate: () => void;
   handleCompile: () => void;
+  handleCoverage: () => void;
 }
 
 function MutationCoverageView({
@@ -21,9 +23,11 @@ function MutationCoverageView({
   isCompiling,
   isMutating,
   isMutateButtonDisabled,
+  isUpdatingCoverage,
   currentProject,
   handleMutate,
   handleCompile,
+  handleCoverage,
 }: MutationCoverageViewProps) {
   return (
     <>
@@ -59,6 +63,11 @@ function MutationCoverageView({
             title="Compile"
             onClick={handleCompile}
             loading={isCompiling}
+          />
+          <Button
+            title="Update Coverage"
+            onClick={handleCoverage}
+            loading={isUpdatingCoverage}
           />
         </div>
         {compilationMessage && (
