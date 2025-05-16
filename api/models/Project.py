@@ -14,8 +14,6 @@ from helpers import csv_helper, file_paths
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-MUTATION_DEFAULT_SCORES = ['0','0','0','0']
-
 """
 This class represents a project in the analysis.
 It is responsible for handling the project's data and running the analysis.
@@ -127,8 +125,11 @@ class Project:
 
         self.clear_project_tools_output()
 
-        d4jh.set_analysis_parameters(project, tool, with_student_tests)
-        self.tool.run_analysis(project)
+        try:
+            d4jh.set_analysis_parameters(project, tool, with_student_tests)
+            self.tool.run_analysis(project)
+        except Exception as e:
+            raise Exception(f"Error running analysis: {e}")
 
         csv_helper.store_project_specific_path_csv(project, tool)
         df1 = csv_helper.load_csv_from_root(project + "-" + tool)
@@ -137,7 +138,6 @@ class Project:
         table_header = self.tool.get_mutant_table_headers()
         
         if os.path.exists("/root/results.csv"):
-            logger.info("Results file found.")
             df2 = csv_helper.load_csv_from_root("results")
             killed_list = self.get_project_mutant_killed_list_from_csvs(df1, df2)
             logger.info("killed_list: %s", killed_list)
@@ -166,8 +166,9 @@ class Project:
 
         try:
             values = [data["Total mutants count"], data["Killed mutants count"], data["Live mutants count"], round(float(data["Mutation score"])*100,2)]
-        finally:
-            logger.info("Values: %s", values)
+            return values
+        except:
+            raise Exception("KeyError: One or more keys not found in the data.")
         #values = [total_mutants, killed_mutants, data["Live mutants count"], mutation_score]
 
         return values

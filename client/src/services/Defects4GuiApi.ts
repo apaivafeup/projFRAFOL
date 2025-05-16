@@ -1,3 +1,4 @@
+import { AxiosError } from "axios";
 import { MutationTools, ProjectType } from "../utils";
 import api from "./api";
 import { Endpoints } from "./Endpoints";
@@ -179,8 +180,15 @@ export class Defects4GuiApiService {
         mutantSheetData: sheet_data,
         mutantTableHeaders: table_header,
       };
-    } catch (error) {
-      console.error("Error:", error);
+    } catch (error: unknown) {
+      const axiosError = error as AxiosError;
+      if (axiosError.response && axiosError.response.status === 422) {
+        throw new Error(
+          (axiosError.response.data as { message: string }).message ||
+            "Unhandled error, check Docker Logs",
+        );
+      }
+
       throw error;
     }
   }

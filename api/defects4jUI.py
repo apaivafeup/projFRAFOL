@@ -132,9 +132,15 @@ def generate_mutants():
         is_not_first_mutations_analysis = project.is_dev_suite_mutated()
         if is_not_first_mutations_analysis:
             return jsonify({'message': 'Skipping analysis - already performed.'}), 204
+    try:
+        sheet_data, table_header, killed_list = project.analyze_mutants(with_student_tests)
+    except Exception as e:
+        return jsonify({'message': str(e)}), 422
     
-    sheet_data, table_header, killed_list = project.analyze_mutants(with_student_tests)
-    summary_data = project.get_project_mutation_summary()
+    try:
+        summary_data = project.get_project_mutation_summary()
+    except Exception as e:
+        return jsonify({'message': str(e)}), 422
 
     return jsonify({
         'table_header': table_header,

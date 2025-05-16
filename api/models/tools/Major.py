@@ -27,7 +27,10 @@ class Major(Tool):
                    + project_version + " -t " + self.name
                    + " $HOME/" + project + "f/tools_output/major/ -o "
                    + "$HOME/results.csv")
-        os.system(cmd)
+        try:
+            os.system(cmd)
+        except subprocess.CalledProcessError as e:
+            raise Exception(f"MAJOR: Error Major Mutant Run Analysis: {e.output}")
 
 
     def get_mutant_table_data(self, df, project = None):
@@ -45,7 +48,6 @@ class Major(Tool):
         try:
             output = subprocess.check_output(cmd, shell=True, text=True, stderr=subprocess.STDOUT)
         except subprocess.CalledProcessError as e:
-            #logger.info(f"MAJOR: Error Major Mutant Run Analysis: { e.output }")
             values = [0,0,0,0]
             return values
         
@@ -58,28 +60,23 @@ class Major(Tool):
     
 
     def parse_major_dataframe(self, df):
+        # Remove potential header-like row accidentally included in data
+        df = df[df["Mutant"] != "Mutant"]
+
         mutant_list = df["Mutant"].tolist()
+        line_list = []
+        operator_list = []
+        original_list = []
+        mutated_list = []
 
-        line_list = list()
-        operator_list = list()
-        original_list = list()
-        mutated_list = list()
-
-        for _, row in df.iloc[1:].iterrows():
+        for _, row in df.iterrows():
             details = ast.literal_eval(row['Details'])
             line_list.append(details.get('line'))
             operator_list.append(details.get('operator'))
             original_list.append(details.get('original'))
             mutated_list.append(details.get('mutated'))
 
-        sheet_data = list()
-
-        for item1, item2, item3, item4, item5 in zip(mutant_list, line_list, operator_list, original_list,
-                                                        mutated_list):
-            sheet_data.append((item1, item2, item3, item4, item5))
-        
-        logger.info(f"Error: {sheet_data }")
-
+        sheet_data = list(zip(mutant_list, line_list, operator_list, original_list, mutated_list))
 
         return sheet_data
     
