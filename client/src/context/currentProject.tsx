@@ -51,6 +51,7 @@ export interface CurrentProjectContextProps {
   ) => void;
   isGeneratingKillMatrix: boolean;
   setIsGeneratingKillMatrix: (isGenerating: boolean) => void;
+  projectLiveMutantsCount: number;
 }
 
 const CurrentProjectContext = createContext<CurrentProjectContextProps | null>(
@@ -78,6 +79,10 @@ export const CurrentProjectProvider: React.FC<{ children: ReactNode }> = ({
     setIsCurrentProjectFirstMutationComplete,
   ] = useState<boolean>(false);
 
+  const projectLiveMutantsCount = useMemo(() => {
+    return Number((currentProject?.mutantSheetData?.length ?? 0) - (currentProject?.killedMutants?.length ?? 0))
+  }, [currentProject])
+
   const projectCacheName = useMemo(() => {
     return currentProject
       ? currentProject.name + "-" + currentProject.mutationTool
@@ -99,9 +104,9 @@ export const CurrentProjectProvider: React.FC<{ children: ReactNode }> = ({
     setCurrentProject((currentProject) =>
       currentProject
         ? {
-            ...currentProject,
-            ...project,
-          }
+          ...currentProject,
+          ...project,
+        }
         : null,
     );
   }, []);
@@ -200,6 +205,7 @@ export const CurrentProjectProvider: React.FC<{ children: ReactNode }> = ({
         setIsCurrentProjectFirstMutationComplete,
         isGeneratingKillMatrix,
         setIsGeneratingKillMatrix,
+        projectLiveMutantsCount,
       }}
     >
       {children}

@@ -26,6 +26,7 @@ export const MutationCoverage: React.FC = () => {
     isCurrentProjectFirstMutationComplete,
     setIsCurrentProjectFirstMutationComplete,
     setJumpToLineNumberOnClassUnderMutation,
+    projectLiveMutantsCount,
   } = useCurrentProject();
   const { showSnackbar } = useSnackbar();
 
@@ -168,6 +169,7 @@ export const MutationCoverage: React.FC = () => {
       handleMutate={handleMutate}
       handleCompile={handleCompile}
       handleCoverage={handleCoverage}
+      projectLiveMutantsCount={projectLiveMutantsCount}
     />
   );
 };

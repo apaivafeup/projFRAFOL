@@ -16,6 +16,7 @@ interface MutationCoverageViewProps {
   handleMutate: () => void;
   handleCompile: () => void;
   handleCoverage: () => void;
+  projectLiveMutantsCount: number;
 }
 
 function MutationCoverageView({
@@ -28,9 +29,10 @@ function MutationCoverageView({
   handleMutate,
   handleCompile,
   handleCoverage,
+  projectLiveMutantsCount,
 }: MutationCoverageViewProps) {
   return (
-    <>
+    <div className="flex flex-col w-full pl-4 pb-4">
       <CurrentProjectHeader />
       <div className=" grid md:grid-cols-3 gap-4 mt-4">
         <CoverageCard
@@ -47,7 +49,7 @@ function MutationCoverageView({
         <CoverageCard
           title="Mutation"
           coverage={Number(currentProject?.mutationSummaryData[3])}
-          ratio={`${currentProject?.mutationSummaryData[1]}/${currentProject?.mutationSummaryData[0]} \n Live: ${currentProject?.mutationSummaryData[2]}`}
+          ratio={`${Number(Number(currentProject?.mutationSummaryData[0] || 0) - projectLiveMutantsCount) || 0}/${currentProject?.mutationSummaryData[0]} \n Live: ${projectLiveMutantsCount}`}
         />
       </div>
       <div className="mt-4 gap-2 flex flex-col">
@@ -83,7 +85,7 @@ function MutationCoverageView({
           </div>
         )}
       </div>
-    </>
+    </div>
   );
 }
 
