@@ -109,7 +109,7 @@ def set_test_suite_in_d4j_classpath(project):
     '''
     student_tests = " -t " + fp.student_test_file_path
     path = '/defects4j/analyzer/analyzer.py'
-    cmd = ("python3 " + path + " set_test_suite $HOME/" + project + "f" + student_tests + " --stdout --stderr -v")
+    cmd = ("python3 " + path + " set_test_suite $HOME/" + project + "f" + student_tests + " --all-dev --stdout --stderr -v")
     #os.system(cmd)
 
     try:
