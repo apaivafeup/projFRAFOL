@@ -73,11 +73,10 @@ function MutationCoverageView({
           />
         </div>
         {compilationMessage && (
-          <div className="max-h-[400px] overflow-scroll">
+          <div className="min-h-0 overflow-hidden">
             <CodeMirror
               value={compilationMessage}
-              height="120"
-              maxHeight="400"
+              maxHeight="400px"
               extensions={[abyss, basicSetup]}
               basicSetup={{ lineNumbers: true }}
               editable={false}
