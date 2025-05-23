@@ -1,5 +1,10 @@
 import Button from "@components/Button";
 import SelectSearch from "@components/SelectSearch";
+import { TextInput } from "@components/TextInput";
+import { EmailIcon } from "@icons/email";
+import { KeyIcon } from "@icons/key";
+import { StudentIcon } from "@icons/student";
+import { SchoolIcon } from "@icons/school";
 
 interface SignupFormViewProps {
   username: string;
@@ -32,36 +37,28 @@ function SignupFormView({
 }: SignupFormViewProps) {
   return (
     <form onSubmit={handleSubmit} className=" items-center flex flex-col">
-      <div className="flex flex-col items-center gap-2 text-lg">
-        <input
-          type="text"
-          placeholder="Student Number"
+      <div className="flex flex-col items-center gap-2">
+        <TextInput
+          icon={<StudentIcon />}
           value={username}
-          onChange={(e) => {
-            setUsername(e.target.value);
-          }}
-          className="border-1 border-gray-200 hover:border-blue-500 p-2.5 text-lg w-80 rounded-xl custom-input"
+          setValue={setUsername}
+          placeholder="Student Number"
         />
-        <input
-          type="text"
-          placeholder="Student Email"
+        <TextInput
+          icon={<EmailIcon />}
           value={email}
-          onChange={(e) => {
-            setEmail(e.target.value);
-          }}
-          className="border-1 border-gray-200 hover:border-blue-500 p-2.5 text-lg w-80 rounded-xl custom-input"
+          setValue={setEmail}
+          placeholder="Student Email"
         />
-        <input
-          type="password"
-          placeholder="Password"
+        <TextInput
+          icon={<KeyIcon />}
           value={password}
-          onChange={(e) => {
-            setPassword(e.target.value);
-          }}
-          className="border-1 border-gray-200 hover:border-blue-500 p-2.5 text-lg w-80 rounded-xl custom-input"
+          setValue={setPassword}
+          placeholder="Password"
         />
       </div>
-      <div className="flex mt-2 flex-col items-center gap-2 justify-center">
+      <div className="flex mt-2 flex-row items-center gap-2 justify-center">
+        <SchoolIcon />
         <SelectSearch
           selection={classSelection}
           handleSelection={setClassSelection}

@@ -6,9 +6,9 @@ import "datatables.net-bs5/css/dataTables.bootstrap5.min.css";
 import "./DataTableStyle.css";
 import { useCurrentProject } from "../../context/currentProject";
 
-interface DataTableComponentProps { }
+interface DataTableComponentProps {}
 
-const DataTableComponent = ({ }: DataTableComponentProps) => {
+const DataTableComponent = ({}: DataTableComponentProps) => {
   const tableRef = useRef<HTMLTableElement | null>(null);
   const dataTableInstance = useRef<any>(null);
   const {
@@ -64,8 +64,8 @@ const DataTableComponent = ({ }: DataTableComponentProps) => {
 
     const filteredData = excludeKilledMutants
       ? currentProject.mutantSheetData.filter(
-        (row) => !currentProject.killedMutants.includes(row[0]),
-      )
+          (row) => !currentProject.killedMutants.includes(row[0]),
+        )
       : currentProject.mutantSheetData;
 
     if (!filteredData.length) {

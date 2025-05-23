@@ -80,8 +80,11 @@ export const CurrentProjectProvider: React.FC<{ children: ReactNode }> = ({
   ] = useState<boolean>(false);
 
   const projectLiveMutantsCount = useMemo(() => {
-    return Number((currentProject?.mutantSheetData?.length ?? 0) - (currentProject?.killedMutants?.length ?? 0))
-  }, [currentProject])
+    return Number(
+      (currentProject?.mutantSheetData?.length ?? 0) -
+        (currentProject?.killedMutants?.length ?? 0),
+    );
+  }, [currentProject]);
 
   const projectCacheName = useMemo(() => {
     return currentProject
@@ -104,9 +107,9 @@ export const CurrentProjectProvider: React.FC<{ children: ReactNode }> = ({
     setCurrentProject((currentProject) =>
       currentProject
         ? {
-          ...currentProject,
-          ...project,
-        }
+            ...currentProject,
+            ...project,
+          }
         : null,
     );
   }, []);

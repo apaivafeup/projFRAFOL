@@ -1,4 +1,7 @@
 import Button from "@components/Button";
+import { TextInput } from "@components/TextInput";
+import { EmailIcon } from "@icons/email";
+import { KeyIcon } from "@icons/key";
 
 interface LoginFormViewProps {
   email: string;
@@ -21,24 +24,18 @@ function LoginFormView({
 }: LoginFormViewProps) {
   return (
     <form onSubmit={handleSubmit} className=" items-center flex flex-col">
-      <div className="flex flex-col items-center gap-2 text-lg">
-        <input
-          type="text"
-          placeholder="Student Email"
+      <div className="flex flex-col items-center gap-2">
+        <TextInput
+          icon={<EmailIcon />}
           value={email}
-          onChange={(e) => {
-            setEmail(e.target.value);
-          }}
-          className="border-1 border-gray-200 hover:border-blue-500 p-2.5 text-lg w-80 rounded-xl custom-input"
+          setValue={setEmail}
+          placeholder="Student Email"
         />
-        <input
-          type="password"
-          placeholder="Password"
+        <TextInput
+          icon={<KeyIcon />}
           value={password}
-          onChange={(e) => {
-            setPassword(e.target.value);
-          }}
-          className="border-1 border-gray-200 hover:border-blue-500 p-2.5 text-lg w-80 rounded-xl custom-input"
+          setValue={setPassword}
+          placeholder="Password"
         />
       </div>
       <label
