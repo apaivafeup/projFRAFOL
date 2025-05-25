@@ -55,6 +55,7 @@ function SignupFormView({
           value={password}
           setValue={setPassword}
           placeholder="Password"
+          type="password"
         />
       </div>
       <div className="flex mt-2 flex-row items-center gap-2 justify-center">
@@ -78,7 +79,7 @@ function SignupFormView({
         <Button
           title={"Sign Up"}
           loading={isLoading}
-          onClick={() => {}}
+          onClick={() => { }}
           type={"submit"}
         />
       </div>

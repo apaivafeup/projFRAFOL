@@ -53,7 +53,7 @@ function TeacherView() {
           icon={<EmailIcon />}
           value={username}
           setValue={setUsername}
-          placeholder="Student Email"
+          placeholder="Email"
         />
         <div className="mt-2">
           <TextInput
@@ -61,13 +61,14 @@ function TeacherView() {
             value={password}
             setValue={setPassword}
             placeholder="Password"
+            type="password"
           />
         </div>
         <div className="mt-4 items-center justify-center flex flex-col">
           <Button
             title={"Login"}
             loading={isLoading}
-            onClick={() => {}}
+            onClick={() => { }}
             type={"submit"}
           ></Button>
         </div>

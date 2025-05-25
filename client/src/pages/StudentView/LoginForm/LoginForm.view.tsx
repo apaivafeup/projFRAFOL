@@ -36,6 +36,7 @@ function LoginFormView({
           value={password}
           setValue={setPassword}
           placeholder="Password"
+          type="password"
         />
       </div>
       <label
@@ -50,7 +51,7 @@ function LoginFormView({
         <Button
           title={"Login"}
           loading={isLoading}
-          onClick={() => {}}
+          onClick={() => { }}
           type={"submit"}
         />
       </div>

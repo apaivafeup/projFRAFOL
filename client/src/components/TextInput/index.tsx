@@ -11,6 +11,7 @@ export const TextInput = ({
   value,
   setValue,
   placeholder,
+  ...props
 }: TextInputProps) => {
   return (
     <TextInputView
@@ -18,6 +19,7 @@ export const TextInput = ({
       value={value}
       setValue={setValue}
       placeholder={placeholder}
+      {...props}
     />
   );
 };
