@@ -174,12 +174,14 @@ class PIT(Tool):
                 status = mutation.get('status')
                 if status == 'KILLED':
                     line_number = mutation.find('lineNumber').text
-                    block = mutation.find('block').text
+                    blocks_elem = mutation.find('blocks')
+                    if blocks_elem is not None:
+                        block_elem = blocks_elem.find('block').text
                     mutator = mutation.find('mutator').text
 
                     mutants_killed.append({
                             'lineNumber': line_number,
-                            'block': block,
+                            'block': block_elem,
                             'mutator': mutator
                         })
 

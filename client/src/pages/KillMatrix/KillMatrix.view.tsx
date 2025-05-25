@@ -3,6 +3,7 @@ import { Project } from "@context/currentProject";
 import { faTable, faCross } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import HelpModalView from "./HelpModal/HelpModal.view";
+import { Badge } from "@components/Badge";
 
 interface KillMatrixViewProps {
   killMatrixIsNotGenerated: boolean;
@@ -23,14 +24,15 @@ function KillMatrixView({
 }: KillMatrixViewProps) {
   if (killMatrixIsNotGenerated) {
     return (
-      <div className="flex flex-col items-center w-full justify-center h-screen">
+      <div className="flex flex-col items-center w-full justify-center h-screen gap-2">
         <FontAwesomeIcon icon={faTable} size="6x" className="text-blue-500" />
         <h1 className="text-3xl font-semibold">Kill Matrix</h1>
+        <Badge badgeType="warning" label="Only supports JUnit 3"></Badge>
+
         <p className="text-gray-500">
           The kill matrix contains information about the mutants which have been
           killed by the developed student tests
-        </p>
-        <p className="text-gray-500">
+
           This can be calculated by running each test against the entire
           mutants, therefore, generating this matrix may take a while
         </p>

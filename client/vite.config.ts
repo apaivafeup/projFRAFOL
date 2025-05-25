@@ -14,6 +14,7 @@ export default defineConfig({
       "@context": path.resolve(__dirname, "src/context"), //
       "@services": path.resolve(__dirname, "src/services"), //
       "@pages": path.resolve(__dirname, "src/pages"), //
+      "@icons": path.resolve(__dirname, "src/icons"), //
     },
   },
   server: {
@@ -25,5 +26,5 @@ export default defineConfig({
     host: true,
     port: 4173,
     strictPort: true,
-   },
+  },
 });
