@@ -18,10 +18,13 @@ def create_class_with_assigned_test_method(java_code: str, test_method_info, all
     # Preserve all non-test methods and members
     preserved_methods = [java_code[m.start_byte : m.end_byte] for m in all_methods]
 
+    extends_clause = "" if "import org.junit.Test;" in all_imports else " extends TestCase"
+
+
     new_class_code = f"""
 {all_imports}
 
-public class StudentTest extends TestCase {{
+public class StudentTest{extends_clause} {{
 """ + "\n".join(preserved_methods) + "\n   " + method_code + "\n}"
     
     return new_class_code
