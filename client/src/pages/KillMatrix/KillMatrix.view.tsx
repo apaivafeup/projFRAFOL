@@ -27,12 +27,11 @@ function KillMatrixView({
       <div className="flex flex-col items-center w-full justify-center h-screen gap-2">
         <FontAwesomeIcon icon={faTable} size="6x" className="text-blue-500" />
         <h1 className="text-3xl font-semibold">Kill Matrix</h1>
-        <Badge badgeType="warning" label="Only supports JUnit 3"></Badge>
+        <Badge badgeType="warning" label="New Feature"></Badge>
 
-        <p className="text-gray-500">
+        <p className="text-gray-500 max-w-[80%] text-center">
           The kill matrix contains information about the mutants which have been
-          killed by the developed student tests
-
+          killed by the developed student tests.
           This can be calculated by running each test against the entire
           mutants, therefore, generating this matrix may take a while
         </p>
