@@ -4,7 +4,7 @@ import { Defects4GuiApiService } from "../../services/Defects4GuiApi";
 import KillMatrixView from "./KillMatrix.view";
 import { useSnackbar } from "@context/snackbar";
 
-export const KillMatrix = () => {
+const KillMatrix = () => {
   const [openHelp, setOpenHelp] = useState(false);
   const {
     currentProject,
@@ -69,3 +69,6 @@ export const KillMatrix = () => {
     />
   );
 };
+
+
+export default KillMatrix;
