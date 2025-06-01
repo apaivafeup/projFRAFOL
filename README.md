@@ -134,22 +134,11 @@ Once Docker has been installed and running, open a terminal in the project direc
 
 ## Usage
 
-- [Version 1.0](#frafol-10)
 - [Version 2.0](#frafol-20)
 
-## Frafol 1.0
+## Frafol 2.0
 
-Open a browser page, using the url http://localhost:8000/.
-
-![FRAFOL Landing Page](./assets/landing.jpg "Landing Page")
-
-From here, select a project from the dropdown menu, indicating the buggy version for the specific project. Clicking import will add the selection to the list of projects that are currently being tested.
-
-Select a project from the list of imported projects and the mutation tool to be applied. Click open to initiate the chosen project and begin writing test cases.
-
-![Project Working Page](./assets/working.jpg "Project Page")
-
-The following page includes an editor for writing test cases and a dashboard of information regarding mutation testing.
+Open a browser page, using the url http://localhost:4173/.
 
 ### Navigation Tabs
 
@@ -166,7 +155,7 @@ This tab provides detailed statistics on code coverage, condition coverage, and 
 - **Condition Coverage**: Software testing metric that evaluates whether each boolean sub-expression (condition) in a program has been tested for both true and false outcomes. This ensures that all logical paths are evaluated, helping to identify errors in the decision-making logic of the code.
 - **Mutation Score**: Software testing metric that measures the effectiveness of a test suite by introducing small changes (mutations) to the program's code and checking if the tests detect the errors. It is the ratio of mutants killed against mutants that remain alive.
 
-Clicking the **Run** button will execute the mutation tool and run the selected test suites against the alterated code.
+Clicking the **Mutate** button will execute the mutation tool and run the selected test suites against the alterated code.
 
 ### Tab2: Class under mutation
 
@@ -188,10 +177,6 @@ This page includes a table detailing information about each live mutant present 
 - **Line**: Which line of code the mutant is altering.
 - **Operator**: Which type of mutant operator is being applied.
 - **Method**: Which class method is being affected by the mutant.
-
-## Frafol 2.0
-
-Open a browser page, using the url http://localhost:4173/.
 
 ### Select Project Tab
 
