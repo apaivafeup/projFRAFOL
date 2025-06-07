@@ -1,0 +1,56 @@
+import json
+import logging
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+def save_imported_project_in_json(project, metric_data=None, coverage_data=None, total_mutants=None):
+    try:
+        with open("data.json", 'r') as imported_projects:
+            data = json.load(imported_projects)
+    except FileNotFoundError:
+        data = []
+    except json.JSONDecodeError:
+        data = []
+
+    project_exists = False
+    for item in data:
+        if item.get("name") == project:
+            item["metric_data"] = metric_data if metric_data is not None else []
+            item["coverage_data"] = coverage_data if coverage_data is not None else []
+            item["total_mutants"] = total_mutants if total_mutants is not None else 0
+            project_exists = True
+            break
+
+    if not project_exists:
+        data.append({
+            "name": project,
+            "metric_data": metric_data if metric_data is not None else [],
+            "coverage_data": coverage_data if coverage_data is not None else [],
+            "total_mutants": total_mutants if total_mutants is not None else 0
+        })
+
+    with open("data.json", 'w') as json_file:
+        json.dump(data, json_file, indent=4, separators=(',', ': '))
+
+def read_imported_project_from_json(project):
+    project_name_version = project
+
+    try:
+        with open("data.json", 'r') as json_file:
+            data = json.load(json_file)
+
+        for item in data:
+            if item.get("name") == project_name_version:
+                return item
+
+        logger.info(f"Project {project_name_version} not found in data.json")
+        return None
+
+    except FileNotFoundError:
+        logger.info("data.json file not found")
+        return None
+    except json.JSONDecodeError:
+        logger.info("Error decoding JSON from data.json")
+        return None

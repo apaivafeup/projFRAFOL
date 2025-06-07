@@ -1,2 +1,18 @@
 
 /defects4j
+
+/api/tmp
+/api/tree-sitter-java
+/api/data.json
+/api/build
+/api/__pycache__
+/api/**/*.pyc
+
+/client/package-lock.json
+/client/node_modules
+
+**/*.pyc
+**/__pycache__/
+**/*.fcache
+
+.vscode

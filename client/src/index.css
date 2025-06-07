@@ -1,0 +1,48 @@
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #ffffff;
+  margin: 0;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  --color-primary: oklch(0.623 0.214 259.815);
+  --color-secondary: oklch(0.882 0.059 254.128);
+  --color-border: oklch(0.928 0.006 264.531);
+}
+
+div:not(.tabview)::-webkit-scrollbar {
+  background-color: #bddbfa;
+  border-radius: 10px;
+}
+
+div:not(.tabview)::-webkit-scrollbar-thumb {
+  background-color: #cee6ff;
+  border-radius: 10px;
+}
+
+div:not(.tabview)::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
+  border-radius: 10px;
+}
+
+input[type="checkbox"] {
+  accent-color: #007bff;
+  background-color: #ffffff;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  color: #495057;
+  cursor: pointer;
+}
+
+input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: none;
+}
